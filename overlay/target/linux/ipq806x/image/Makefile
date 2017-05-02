@@ -181,7 +181,7 @@ define Device/mr33
 	IMAGE_SIZE := 29753344
 	IMAGES = sysupgrade.bin
 	IMAGE/sysupgrade.bin := append-kernel | append-rootfs | pad-rootfs | append-metadata
-	DEVICE_PACKAGES := ath10k-firmware-qca99x0 ath10k-firmware-qca988x
+	DEVICE_PACKAGES := ipq-wifi-mr33 ath10k-firmware-qca988x
 endef
 
 define Device/FRITZ4040
