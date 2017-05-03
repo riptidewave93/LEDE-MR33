@@ -4,7 +4,7 @@
  		return -EIO;
  	}
 
-+	if (of_property_read_bool(switch_node, "ugly")) {
++	if (of_property_read_bool(switch_node, "single_nic")) {
 +#define ESS_RGMII_CTRL		0x0004
 +
 +/* Port status registers */

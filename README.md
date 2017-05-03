@@ -1,7 +1,7 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [fa3649d97ef08b375e628a4875e67f91c6d87644](https://github.com/lede-project/source/commit/fa3649d97ef08b375e628a4875e67f91c6d87644)
+Currently based on commit [3c3f7cfe4d63a83d06e86133e7d4ecf9b91f1ae5](https://github.com/lede-project/source/commit/3c3f7cfe4d63a83d06e86133e7d4ecf9b91f1ae5)
 
 Building
 -----
