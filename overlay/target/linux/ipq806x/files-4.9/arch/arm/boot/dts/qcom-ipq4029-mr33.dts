@@ -18,333 +18,333 @@
 #include <dt-bindings/soc/qcom,tcsr.h>
 
 / {
-  model = "Meraki MR33 Access Point";
-  compatible = "meraki,stinkbug", "qcom,ipq4019";
+	model = "Meraki MR33 Access Point";
+	compatible = "meraki,stinkbug", "qcom,ipq4019";
 
-  aliases {
-    i2c1 = &i2c_1;
-  };
+	aliases {
+		i2c1 = &i2c_1;
+	};
 
-  memory {
-    device_type = "memory";
-    reg = <0x80000000 0x10000000>;
-  };
+	memory {
+		device_type = "memory";
+		reg = <0x80000000 0x10000000>;
+	};
 
-  reserved-memory {
-    #address-cells = <0x1>;
-    #size-cells = <0x1>;
-    ranges;
+	reserved-memory {
+		#address-cells = <0x1>;
+		#size-cells = <0x1>;
+		ranges;
 
-    rsvd1@87000000 {
-      reg = <0x87000000 0x500000>;
-      no-map;
-    };
+		rsvd1@87000000 {
+			reg = <0x87000000 0x500000>;
+			no-map;
+		};
 
-    wifi_dump@87500000 {
-      reg = <0x87500000 0x600000>;
-      no-map;
-    };
+		wifi_dump@87500000 {
+			reg = <0x87500000 0x600000>;
+			no-map;
+		};
 
-    rsvd2@87B00000 {
-      reg = <0x87b00000 0x500000>;
-      no-map;
-    };
-  };
+		rsvd2@87B00000 {
+			reg = <0x87b00000 0x500000>;
+			no-map;
+		};
+	};
 
-  soc {
-    pinctrl@0x01000000 {
-      i2c_1_pins: i2c_1_pinmux {
-        pinmux {
-          function = "blsp_i2c1";
-          pins = "gpio34", "gpio35";
-        };
-        pinconf {
-          pins = "gpio34", "gpio35";
-          drive-strength = <16>;
-          bias-disable;
-        };
-      };
-    };
+	soc {
+		pinctrl@0x01000000 {
+			i2c_1_pins: i2c_1_pinmux {
+				pinmux {
+					function = "blsp_i2c1";
+					pins = "gpio34", "gpio35";
+				};
+				pinconf {
+					pins = "gpio34", "gpio35";
+					drive-strength = <16>;
+					bias-disable;
+				};
+			};
+		};
 
-    ess_tcsr@1953000 {
-      compatible = "qcom,tcsr";
-      reg = <0x1953000 0x1000>;
-      qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
-    };
+		ess_tcsr@1953000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1953000 0x1000>;
+			qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
+		};
 
-    i2c_0: i2c@78b7000 {
-      status = "ok";
-      reg = <0x78b7000 0x600>; /* Fix upstream offset typo */
-      clocks = <&gcc GCC_BLSP1_AHB_CLK>,
-        <&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>; /* Fix upstream clock typo */
-      at24@50 {
-        compatible = "atmel,24c64";
-        pagesize = <32>;
-        reg = <0x50>;
-        read-only; /* This holds our MAC & Meraki board-data */
-      };
-    };
+		i2c_0: i2c@78b7000 {
+			status = "ok";
+			reg = <0x78b7000 0x600>; /* Fix upstream offset typo */
+			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
+				<&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>; /* Fix upstream clock typo */
+			at24@50 {
+				compatible = "atmel,24c64";
+				pagesize = <32>;
+				reg = <0x50>;
+				read-only; /* This holds our MAC & Meraki board-data */
+			};
+		};
 
-    i2c_1: i2c@78b8000 { /* Missing in ipq4019 define */
-      compatible = "qcom,i2c-qup-v2.2.1";
-      reg = <0x78b8000 0x600>;
-      interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
-      clocks = <&gcc GCC_BLSP1_AHB_CLK>,
-         <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>;
-      clock-names = "iface", "core";
-      #address-cells = <1>;
-      #size-cells = <0>;
-      dmas = <&blsp_dma 11>, <&blsp_dma 10>;
-      dma-names = "rx", "tx";
-      pinctrl-0 = <&i2c_1_pins>;
-      pinctrl-names = "default";
-      status = "ok";
+		i2c_1: i2c@78b8000 { /* Missing in ipq4019 define */
+			compatible = "qcom,i2c-qup-v2.2.1";
+			reg = <0x78b8000 0x600>;
+			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
+				 <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>;
+			clock-names = "iface", "core";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			dmas = <&blsp_dma 11>, <&blsp_dma 10>;
+			dma-names = "rx", "tx";
+			pinctrl-0 = <&i2c_1_pins>;
+			pinctrl-names = "default";
+			status = "ok";
 
-      lp5562 {
-        enable-gpio = <&tlmm 48 GPIO_ACTIVE_HIGH>;
-        compatible = "ti,lp5562";
-        clock-mode = /bits/8 <2>;
-        reg = <0x30>;
+			lp5562 {
+				enable-gpio = <&tlmm 48 GPIO_ACTIVE_HIGH>;
+				compatible = "ti,lp5562";
+				clock-mode = /bits/8 <2>;
+				reg = <0x30>;
 
-        chan0 {
-           chan-name = "mr33:tricolor:red";
-           led-cur = /bits/ 8 <0x20>;
-           max-cur = /bits/ 8 <0x60>;
-        };
+				chan0 {
+					 chan-name = "mr33:tricolor:red";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
+				};
 
-        chan1 {
-           chan-name = "mr33:tricolor:green";
-           led-cur = /bits/ 8 <0x20>;
-           max-cur = /bits/ 8 <0x60>;
-        };
+				chan1 {
+					 chan-name = "mr33:tricolor:green";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
+				};
 
-        chan2 {
-           chan-name = "mr33:tricolor:blue";
-           led-cur = /bits/ 8 <0x20>;
-           max-cur = /bits/ 8 <0x60>;
-        };
+				chan2 {
+					 chan-name = "mr33:tricolor:blue";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
+				};
 
-        chan3 {
-           chan-name = "mr33:power:white";
-           led-cur = /bits/ 8 <0x20>;
-           max-cur = /bits/ 8 <0x60>;
-        };
-      };
-    };
+				chan3 {
+					 chan-name = "mr33:power:white";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
+				};
+			};
+		};
 
-    tcsr@1949000 {
-      compatible = "qcom,tcsr";
-      reg = <0x1949000 0x100>;
-      qcom,wifi_glb_cfg = <TCSR_WIFI_GLB_CFG>;
-    };
+		tcsr@1949000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1949000 0x100>;
+			qcom,wifi_glb_cfg = <TCSR_WIFI_GLB_CFG>;
+		};
 
-    tcsr@1957000 {
-      compatible = "qcom,tcsr";
-      reg = <0x1957000 0x100>;
-      qcom,wifi_noc_memtype_m0_m2 = <TCSR_WIFI_NOC_MEMTYPE_M0_M2>;
-    };
+		tcsr@1957000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1957000 0x100>;
+			qcom,wifi_noc_memtype_m0_m2 = <TCSR_WIFI_NOC_MEMTYPE_M0_M2>;
+		};
 
-    counter@4a1000 {
-      compatible = "qcom,qca-gcnt";
-      reg = <0x4a1000 0x4>;
-    };
+		counter@4a1000 {
+			compatible = "qcom,qca-gcnt";
+			reg = <0x4a1000 0x4>;
+		};
 
-    mdio@90000 {
-      status = "okay";
-    };
+		mdio@90000 {
+			status = "okay";
+		};
 
-    ess-switch@c000000 {
-      status = "ok";
-      single_nic;
-      compatible = "qcom,ess-switch";
-      reg = <0xc000000 0x80000>;
-      switch_access_mode = "local bus";
-      resets = <&gcc ESS_RESET>;
-      reset-names = "ess_rst";
-      clocks = <&gcc GCC_ESS_CLK>;
-      clock-names = "ess_clk";
-      switch_cpu_bmp = <0x1>;
-      switch_mac_mode = <0x3>; /* mac mode for RGMII RMII */
-      switch_lan_bmp = <0x0>; /* lan port bitmap */
-      switch_wan_bmp = <0x10>; /* wan port bitmap */
-      switch_initvlas = <0x7c 0x54>;
-    };
+		ess-switch@c000000 {
+			status = "ok";
+			single_nic;
+			compatible = "qcom,ess-switch";
+			reg = <0xc000000 0x80000>;
+			switch_access_mode = "local bus";
+			resets = <&gcc ESS_RESET>;
+			reset-names = "ess_rst";
+			clocks = <&gcc GCC_ESS_CLK>;
+			clock-names = "ess_clk";
+			switch_cpu_bmp = <0x1>;
+			switch_mac_mode = <0x3>; /* mac mode for RGMII RMII */
+			switch_lan_bmp = <0x0>; /* lan port bitmap */
+			switch_wan_bmp = <0x10>; /* wan port bitmap */
+			switch_initvlas = <0x7c 0x54>;
+		};
 
-    ess-psgmii@98000 {
-      status = "okay";
-      psgmii_access_mode = "local bus";
-      resets = <&gcc 77>;
-      reset-names = "psgmii_rst";
-    };
+		ess-psgmii@98000 {
+			status = "okay";
+			psgmii_access_mode = "local bus";
+			resets = <&gcc 77>;
+			reset-names = "psgmii_rst";
+		};
 
-    edma@c080000 {
-      status = "okay";
-      resets = <&gcc ESS_RESET>;
-      reset-names = "ess_rst";
-      qcom,num_gmac = <1>;
+		edma@c080000 {
+			status = "okay";
+			resets = <&gcc ESS_RESET>;
+			reset-names = "ess_rst";
+			qcom,num_gmac = <1>;
 
-      /delete-property/ gmac1;
-      gmac0 {
-        qcom,phy_mdio_addr = <1>;
-        qcom,poll_required = <1>;
-        vlan_tag = <0 0x20>;
-      };
-    };
+			/delete-property/ gmac1;
+			gmac0 {
+				qcom,phy_mdio_addr = <1>;
+				qcom,poll_required = <1>;
+				vlan_tag = <0 0x20>;
+			};
+		};
 
-    ssphy@9a000 {
-      status = "disabled";
-    };
+		ssphy@9a000 {
+			status = "disabled";
+		};
 
-    hsphy@a6000 {
-      status = "disabled";
-    };
+		hsphy@a6000 {
+			status = "disabled";
+		};
 
-    usb3@8af8800 {
-      status = "disabled";
-    };
+		usb3@8af8800 {
+			status = "disabled";
+		};
 
-    hsphy@a8000 {
-      status = "disabled";
-    };
+		hsphy@a8000 {
+			status = "disabled";
+		};
 
-    usb2@60f8800 {
-      status = "disabled";
-    };
+		usb2@60f8800 {
+			status = "disabled";
+		};
 
-    wifi@a000000 {
-      status = "okay";
-    };
+		wifi@a000000 {
+			status = "okay";
+		};
 
-    wifi@a800000 {
-      status = "okay";
-    };
+		wifi@a800000 {
+			status = "okay";
+		};
 
-    cryptobam: dma@8e04000 {
-      status = "okay";
-    };
+		cryptobam: dma@8e04000 {
+			status = "okay";
+		};
 
-    crypto@8e3a000 {
-      status = "okay";
-    };
+		crypto@8e3a000 {
+			status = "okay";
+		};
 
-    nand@7980000 {
-      status = "disabled";
-      compatible = "qcom,ipq806x-nand";
-      reg = <0x7980000 0x800>;
-      clocks = <&gcc GCC_QPIC_AHB_CLK>,
-         <&gcc GCC_QPIC_CLK>;
-      clock-names = "aon", "core";
-      dmas = <&blsp_dma 3>;
-      dma-names = "rxtx";
-      qcom,cmd-crci = <15>;
-      qcom,data-crci = <3>;
+		nand@7980000 {
+			status = "disabled";
+			compatible = "qcom,ipq806x-nand";
+			reg = <0x7980000 0x800>;
+			clocks = <&gcc GCC_QPIC_AHB_CLK>,
+				 <&gcc GCC_QPIC_CLK>;
+			clock-names = "aon", "core";
+			dmas = <&blsp_dma 3>;
+			dma-names = "rxtx";
+			qcom,cmd-crci = <15>;
+			qcom,data-crci = <3>;
 
-      #address-cells = <1>;
-      #size-cells = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 
-      nandcs@0 {
-        compatible = "qcom,nandcs";
-        reg = <0>;
+			nandcs@0 {
+				compatible = "qcom,nandcs";
+				reg = <0>;
 
-        nand-ecc-strength = <4>;
-        nand-ecc-step-size = <512>;
-        nand-bus-width = <8>;
+				nand-ecc-strength = <4>;
+				nand-ecc-step-size = <512>;
+				nand-bus-width = <8>;
 
-        partitions {
-          compatible = "fixed-partitions";
-          #address-cells = <1>;
-          #size-cells = <1>;
+				partitions {
+					compatible = "fixed-partitions";
+					#address-cells = <1>;
+					#size-cells = <1>;
 
-          partition@0 {
-            label = "sbl1";
-            reg = <0x000000000000 0x000000100000>;
-            read-only;
-          };
-          partition@1 {
-            label = "mibib";
-            reg = <0x000000100000 0x000000100000>;
-            read-only;
-          };
-          partition@2 {
-            label = "bootconfig";
-            reg = <0x000000200000 0x000000100000>;
-            read-only;
-          };
-          partition@3 {
-            label = "qsee";
-            reg = <0x000000300000 0x000000100000>;
-            read-only;
-          };
-          partition@4 {
-            label = "qsee_alt";
-            reg = <0x000000400000 0x000000100000>;
-            read-only;
-          };
-          partition@5 {
-            label = "cdt";
-            reg = <0x000000500000 0x000000100000>;
-            read-only;
-          };
-          partition@6 {
-            label = "cdt_alt";
-            reg = <0x000000580000 0x000000100000>;
-            read-only;
-          };
-          partition@7 {
-            label = "ddrparams";
-            reg = <0x000000600000 0x000000100000>;
-            read-only;
-          };
-          partition@8 {
-            label = "u-boot";
-            reg = <0x000000700000 0x000000200000>;
-            read-only;
-          };
-          partition@9 {
-            label = "u-boot-backup";
-            reg = <0x000000900000 0x000000200000>;
-            read-only;
-          };
-          partition@10 {
-            label = "ubi";
-            reg = <0x000000c00000 0x000007000000>;
-          };
-        };
-      };
-    };
+					partition@0 {
+						label = "sbl1";
+						reg = <0x000000000000 0x000000100000>;
+						read-only;
+					};
+					partition@1 {
+						label = "mibib";
+						reg = <0x000000100000 0x000000100000>;
+						read-only;
+					};
+					partition@2 {
+						label = "bootconfig";
+						reg = <0x000000200000 0x000000100000>;
+						read-only;
+					};
+					partition@3 {
+						label = "qsee";
+						reg = <0x000000300000 0x000000100000>;
+						read-only;
+					};
+					partition@4 {
+						label = "qsee_alt";
+						reg = <0x000000400000 0x000000100000>;
+						read-only;
+					};
+					partition@5 {
+						label = "cdt";
+						reg = <0x000000500000 0x000000100000>;
+						read-only;
+					};
+					partition@6 {
+						label = "cdt_alt";
+						reg = <0x000000580000 0x000000100000>;
+						read-only;
+					};
+					partition@7 {
+						label = "ddrparams";
+						reg = <0x000000600000 0x000000100000>;
+						read-only;
+					};
+					partition@8 {
+						label = "u-boot";
+						reg = <0x000000700000 0x000000200000>;
+						read-only;
+					};
+					partition@9 {
+						label = "u-boot-backup";
+						reg = <0x000000900000 0x000000200000>;
+						read-only;
+					};
+					partition@10 {
+						label = "ubi";
+						reg = <0x000000c00000 0x000007000000>;
+					};
+				};
+			};
+		};
 
-  };
+	};
 
-  gpio-keys {
-    compatible = "gpio-keys";
+	gpio-keys {
+		compatible = "gpio-keys";
 
-    reset {
-      label = "reset";
-      gpios = <&tlmm 18 GPIO_ACTIVE_LOW>;
-      linux,code = <KEY_RESTART>;
-    };
-  };
+		reset {
+			label = "reset";
+			gpios = <&tlmm 18 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_RESTART>;
+		};
+	};
 
-  gpio-leds {
-    compatible = "gpio-leds";
+	gpio-leds {
+		compatible = "gpio-leds";
 
-    diag {
-      label = "mr33:power:orange";
-      gpios = <&tlmm 49 GPIO_ACTIVE_LOW>;
-      panic-indicator;
-    };
-  };
+		diag {
+			label = "mr33:power:orange";
+			gpios = <&tlmm 49 GPIO_ACTIVE_LOW>;
+			panic-indicator;
+		};
+	};
 };
 
 &spi_0 {
-  status = "disabled";
+	status = "disabled";
 };
 
 &cpu0_opp_table {
-  /delete-node/ opp@666000000;
+	/delete-node/ opp@666000000;
 
-  opp@710000000 {
-    opp-hz = /bits/ 64 <710000000>;
-    clock-latency-ns = <256000>;
-  };
+	opp@710000000 {
+		opp-hz = /bits/ 64 <710000000>;
+		clock-latency-ns = <256000>;
+	};
 };
