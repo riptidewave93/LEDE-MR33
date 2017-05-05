@@ -73,7 +73,7 @@
 		};
 
 		i2c_0: i2c@78b7000 {
-			status = "ok";
+			status = "okay";
 			reg = <0x78b7000 0x600>; /* Fix upstream offset typo */
 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
 				<&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>; /* Fix upstream clock typo */
@@ -98,7 +98,7 @@
 			dma-names = "rx", "tx";
 			pinctrl-0 = <&i2c_1_pins>;
 			pinctrl-names = "default";
-			status = "ok";
+			status = "okay";
 
 			lp5562 {
 				enable-gpio = <&tlmm 48 GPIO_ACTIVE_HIGH>;
@@ -154,7 +154,7 @@
 		};
 
 		ess-switch@c000000 {
-			status = "ok";
+			status = "okay";
 			single_nic;
 			compatible = "qcom,ess-switch";
 			reg = <0xc000000 0x80000>;
@@ -227,28 +227,14 @@
 			status = "okay";
 		};
 
-		nand@7980000 {
-			status = "disabled";
-			compatible = "qcom,ipq806x-nand";
-			reg = <0x7980000 0x800>;
-			clocks = <&gcc GCC_QPIC_AHB_CLK>,
-				 <&gcc GCC_QPIC_CLK>;
-			clock-names = "aon", "core";
-			dmas = <&blsp_dma 3>;
-			dma-names = "rxtx";
-			qcom,cmd-crci = <15>;
-			qcom,data-crci = <3>;
+		qpic_bam: dma@7984000 {
+			status = "okay";
+		};
 
-			#address-cells = <1>;
-			#size-cells = <0>;
+		nand: qpic-nand@79b0000 {
+			/* status = "okay"; */
 
 			nandcs@0 {
-				compatible = "qcom,nandcs";
-				reg = <0>;
-
-				nand-ecc-strength = <4>;
-				nand-ecc-step-size = <512>;
-				nand-bus-width = <8>;
 
 				partitions {
 					compatible = "fixed-partitions";
@@ -312,7 +298,6 @@
 				};
 			};
 		};
-
 	};
 
 	gpio-keys {
@@ -334,6 +319,28 @@
 			panic-indicator;
 		};
 	};
+
+	gpio_export {
+		compatible = "gpio-export";
+
+		nload_ble {
+			gpio-export,name = "nload_ble";
+			gpio-export,output = <1>;
+			gpios = <&tlmm 52 GPIO_ACTIVE_LOW>;
+		};
+
+		nreset_ble {
+			gpio-export,name = "nreset_ble";
+			gpio-export,output = <1>;
+			gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
+		};
+
+		adpt_pwr_src {
+			gpio-export,name = "adpt_pwr_src";
+			gpios = <&tlmm 43 GPIO_ACTIVE_LOW>;
+		};
+	};
+
 };
 
 &spi_0 {
