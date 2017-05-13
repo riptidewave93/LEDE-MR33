@@ -1,0 +1,90 @@
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -136,44 +136,6 @@
+ 			clock-frequency = <32768>;
+ 			#clock-cells = <0>;
+ 		};
+-
+-		qpic_bam: dma@7984000 {
+-			compatible = "qcom,bam-v1.7.0";
+-			reg = <0x7984000 0x1a000>;
+-			interrupts = <0 101 0>;
+-			clocks = <&gcc GCC_QPIC_AHB_CLK>;
+-			clock-names = "bam_clk";
+-			#dma-cells = <1>;
+-			qcom,ee = <0>;
+-			status = "disabled";
+-		};
+-
+-		nand: qpic-nand@79b0000 {
+-			compatible = "qcom,ebi2-nandc-bam", "qcom,msm-nand";
+-			reg = <0x79b0000 0x1000>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			clocks = <&gcc GCC_QPIC_CLK>,
+-				<&gcc GCC_QPIC_AHB_CLK>;
+-			clock-names = "core", "aon";
+-
+-			dmas = <&qpic_bam 0>,
+-				<&qpic_bam 1>,
+-				<&qpic_bam 2>;
+-			dma-names = "tx", "rx", "cmd";
+-			status = "disabled";
+-
+-			nandcs@0 {
+-				compatible = "qcom,nandcs";
+-				reg = <0>;
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-
+-				nand-ecc-strength = <4>;
+-				nand-ecc-step-size = <512>;
+-				nand-bus-width = <8>;
+-			};
+-		};
+ 	};
+
+ 	soc {
+@@ -702,5 +664,42 @@
+ 			status = "disabled";
+ 		};
+
++    qpic_bam: dma@7984000 {
++			compatible = "qcom,bam-v1.7.0";
++			reg = <0x7984000 0x1a000>;
++			interrupts = <0 101 0>;
++			clocks = <&gcc GCC_QPIC_AHB_CLK>;
++			clock-names = "bam_clk";
++			#dma-cells = <1>;
++			qcom,ee = <0>;
++			status = "disabled";
++		};
++
++		nand: qpic-nand@79b0000 {
++			compatible = "qcom,ebi2-nandc-bam", "qcom,msm-nand";
++			reg = <0x79b0000 0x1000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&gcc GCC_QPIC_CLK>,
++				<&gcc GCC_QPIC_AHB_CLK>;
++			clock-names = "core", "aon";
++
++			dmas = <&qpic_bam 0>,
++				<&qpic_bam 1>,
++				<&qpic_bam 2>;
++			dma-names = "tx", "rx", "cmd";
++			status = "disabled";
++
++			nandcs@0 {
++				compatible = "qcom,nandcs";
++				reg = <0>;
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				nand-ecc-strength = <4>;
++				nand-ecc-step-size = <512>;
++				nand-bus-width = <8>;
++			};
++		};
+ 	};
+ };

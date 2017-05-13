@@ -11,7 +11,7 @@
  * any warranty of any kind, whether express or implied.
  */
 
-#include "qcom-ipq4019-ap.dk04.1.dtsi"
+#include "qcom-ipq4019-ap.dk01.1.dtsi"
 #include "qcom-ipq4019-bus.dtsi"
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -27,15 +27,14 @@
 		led-failsafe = &power;
 		led-running = &power;
 		led-upgrade = &power;
+		/delete-property/ spi0;
 	};
 
-	/* Do we really need this defined? */
 	memory {
 		device_type = "memory";
 		reg = <0x80000000 0x10000000>;
 	};
 
-	/* Same for these? */
 	reserved-memory {
 		#address-cells = <0x1>;
 		#size-cells = <0x1>;
@@ -60,6 +59,17 @@
 	soc {
 		pinctrl@0x01000000 {
 
+			/delete-property/ spi_0_pinmux;
+
+			mdio_pins: mdio_pinmux {
+					 /delete-property/ mux_1;
+					 /delete-property/ mux_2;
+			 };
+
+			serial_0_pins: serial_pinmux {
+				/delete-property/ mux;
+			};
+
 			i2c_1_pins: i2c_1_pinmux {
 				pinmux {
 					function = "blsp_i2c1";
@@ -71,17 +81,58 @@
 					bias-disable;
 				};
 			};
+
+			serial_1_pins: serial_1_pinmux {
+				mux {
+					pins = "gpio8", "gpio9", "gpio10", "gpio11";
+					function = "blsp_uart1";
+					bias-disable;
+				};
+			};
+
+			nand_pins: nand_pins {
+				mux {
+					pins = "gpio52", "gpio53", "gpio54",
+						"gpio55", "gpio56", "gpio57",
+						"gpio58", "gpio59", "gpio60",
+						"gpio61", "gpio62", "gpio63",
+						"gpio64", "gpio65", "gpio66",
+						"gpio67", "gpio68", "gpio69";
+					function = "qpic_pad";
+					bias-disable;
+				};
+
+				pullups {
+					pins = "gpio52", "gpio53", "gpio58",
+						"gpio59";
+					bias-pull-up;
+				};
+
+				pulldowns {
+					pins = "gpio54", "gpio55", "gpio56",
+						"gpio57", "gpio60", "gpio61",
+						"gpio62", "gpio63", "gpio64",
+						"gpio65", "gpio66", "gpio67",
+						"gpio68", "gpio69";
+					bias-pull-down;
+				};
+			};
+
 		};
 
-		spi_0: spi@78b5000 {
-			status = "disabled";
+		/delete-node/ spi@78b5000;
+
+		ess_tcsr@1953000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1953000 0x1000>;
+			qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
 		};
 
 		i2c_0: i2c@78b7000 {
+			status = "okay";
 			reg = <0x78b7000 0x600>; /* Fix upstream offset typo */
 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
 				<&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>; /* Fix upstream clock typo */
-
 			at24@50 {
 				compatible = "atmel,24c64";
 				pagesize = <32>;
@@ -90,7 +141,7 @@
 			};
 		};
 
-		i2c_1: i2c@78b8000 { /* Missing in IPQ4019 define */
+		i2c_1: i2c@78b8000 { /* Missing in ipq4019 define */
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x78b8000 0x600>;
 			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
@@ -112,36 +163,29 @@
 				reg = <0x30>;
 
 				chan0 {
-					chan-name = "mr33:tricolor:red";
-					led-cur = /bits/ 8 <0x20>;
-					max-cur = /bits/ 8 <0x60>;
+					 chan-name = "mr33:tricolor:red";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
 				};
 
 				power: chan1 {
-					label = "mr33:tricolor:green"; /* used by userspace LED parser */
-					chan-name = "mr33:tricolor:green";
-					led-cur = /bits/ 8 <0x20>;
-					max-cur = /bits/ 8 <0x60>;
+					 chan-name = "mr33:tricolor:green";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
 				};
 
 				chan2 {
-					chan-name = "mr33:tricolor:blue";
-					led-cur = /bits/ 8 <0x20>;
-					max-cur = /bits/ 8 <0x60>;
+					 chan-name = "mr33:tricolor:blue";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
 				};
 
 				chan3 {
-					chan-name = "mr33:power:white";
-					led-cur = /bits/ 8 <0x20>;
-					max-cur = /bits/ 8 <0x60>;
+					 chan-name = "mr33:power:white";
+					 led-cur = /bits/ 8 <0x20>;
+					 max-cur = /bits/ 8 <0x60>;
 				};
 			};
-		};
-
-		ess_tcsr@1953000 {
-			compatible = "qcom,tcsr";
-			reg = <0x1953000 0x1000>;
-			qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
 		};
 
 		tcsr@1949000 {
@@ -161,15 +205,36 @@
 			reg = <0x4a1000 0x4>;
 		};
 
+		mdio@90000 {
+			status = "okay";
+		};
+
 		ess-switch@c000000 {
+			status = "okay";
 			single_nic;
+			compatible = "qcom,ess-switch";
+			reg = <0xc000000 0x80000>;
+			switch_access_mode = "local bus";
+			resets = <&gcc ESS_RESET>;
+			reset-names = "ess_rst";
+			clocks = <&gcc GCC_ESS_CLK>;
+			clock-names = "ess_clk";
 			switch_cpu_bmp = <0x1>;
 			switch_mac_mode = <0x3>; /* mac mode for RGMII RMII */
 			switch_lan_bmp = <0x0>; /* lan port bitmap */
 			switch_wan_bmp = <0x10>; /* wan port bitmap */
+			switch_initvlas = <0x7c 0x54>;
+		};
+
+		ess-psgmii@98000 {
+			status = "okay";
+			psgmii_access_mode = "local bus";
+			resets = <&gcc 77>;
+			reset-names = "psgmii_rst";
 		};
 
 		edma@c080000 {
+			status = "okay";
 			resets = <&gcc ESS_RESET>;
 			reset-names = "ess_rst";
 			qcom,num_gmac = <1>;
@@ -202,15 +267,50 @@
 			status = "disabled";
 		};
 
-		pcie0: pci@40000000 {
+		wifi@a000000 {
 			status = "okay";
-			perst-gpio = <&tlmm 38 0x1>;
-			wake-gpio = <&tlmm 50 0x1>;
+		};
+
+		wifi@a800000 {
+			status = "okay";
+		};
+
+    pcie0: pci@40000000 {
+           satus = "ok";
+           perst-gpio = <&tlmm 38 0x1>;
+           wake-gpio = <&tlmm 50 0x1>;
+    };
+
+		serial@78af000 {
+			/delete-property/ pinctrl-0;
+			/delete-property/ pinctrl-names;
+		};
+
+		serial@78b0000 {
+			pinctrl-0 = <&serial_1_pins>;
+			pinctrl-names = "default";
+			status = "okay";
+		};
+
+		cryptobam: dma@8e04000 {
+			status = "okay";
+		};
+
+		crypto@8e3a000 {
+			status = "okay";
+		};
+
+		qpic_bam: dma@7984000 {
+			status = "okay";
 		};
 
 		nand: qpic-nand@79b0000 {
+			pinctrl-0 = <&nand_pins>;
+			pinctrl-names = "default";
+			status = "okay";
 
 			nandcs@0 {
+
 				partitions {
 					compatible = "fixed-partitions";
 					#address-cells = <1>;
