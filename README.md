@@ -4,10 +4,10 @@ Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 Currently based on commit [1a16cb9c67f0d2c530914aec31c721b75f03a908](https://github.com/lede-project/source/commit/1a16cb9c67f0d2c530914aec31c721b75f03a908)
 
 And the following cherry picks:
-https://patchwork.ozlabs.org/patch/752962/
-https://patchwork.ozlabs.org/patch/761243/
-https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4
-https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7
+  * https://patchwork.ozlabs.org/patch/752962/
+  * https://patchwork.ozlabs.org/patch/761243/
+  * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4
+  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7
 
 Building
 -----
