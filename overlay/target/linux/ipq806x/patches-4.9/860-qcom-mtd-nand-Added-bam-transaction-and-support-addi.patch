@@ -10,7 +10,7 @@ This patch adds the following for NAND BAM DMA support
     data sgl. This transaction will be resetted before every
     request.
  - Allocation function for NAND BAM transaction which will be
-    called only once@probe time.
+    called only once at probe time.
  - Reset function for NAND BAM transaction which will be called
     before any new NAND request.
  - Add support for additional CSRs.

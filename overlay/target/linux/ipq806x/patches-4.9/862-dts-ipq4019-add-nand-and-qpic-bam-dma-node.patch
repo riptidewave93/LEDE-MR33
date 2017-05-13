@@ -9,36 +9,73 @@ board.
 
 Signed-off-by: Ram Chandra Jangir <rjangir@codeaurora.org>
 ---
- arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi |  8 ++++++
- arch/arm/boot/dts/qcom-ipq4019.dtsi           | 38 +++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+)
+ arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi | 39 +++++++++++++++++++++++++++
+ arch/arm/boot/dts/qcom-ipq4019.dtsi           | 38 ++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+)
 
 diff --git a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
-index 09fb047..f37641e 100644
+index 09fb047..91630dc 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
-@@ -204,5 +204,13 @@
-		wifi@a800000 {
-			status = "ok";
-		};
+@@ -101,6 +101,34 @@
+ 					bias-bus-hold;
+ 				};
+ 			};
++
++			nand_pins: nand_pins {
++				mux {
++					pins = "gpio52", "gpio53", "gpio54",
++						"gpio55", "gpio56", "gpio57",
++						"gpio58", "gpio59", "gpio60",
++						"gpio61", "gpio62", "gpio63",
++						"gpio64", "gpio65", "gpio66",
++						"gpio67", "gpio68", "gpio69";
++					function = "qpic_pad";
++					bias-disable;
++				};
++
++				pullups {
++					pins = "gpio52", "gpio53", "gpio58",
++						"gpio59";
++					bias-pull-up;
++				};
++
++				pulldowns {
++					pins = "gpio54", "gpio55", "gpio56",
++						"gpio57", "gpio60", "gpio61",
++						"gpio62", "gpio63", "gpio64",
++						"gpio65", "gpio66", "gpio67",
++						"gpio68", "gpio69";
++					bias-pull-down;
++				};
++			};
+ 		};
+ 
+ 		blsp_dma: dma@7884000 {
+@@ -204,5 +233,15 @@
+ 		wifi@a800000 {
+ 			status = "ok";
+ 		};
 +
 +		qpic_bam: dma@7984000 {
 +			status = "ok";
 +		};
 +
 +		nand: qpic-nand@79b0000 {
++			pinctrl-0 = <&nand_pins>;
++			pinctrl-names = "default";
 +			status = "ok";
 +		};
-	};
+ 	};
  };
 diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
 index 52a64e7..740808b 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
 @@ -593,5 +593,43 @@
-					  "legacy";
-			status = "disabled";
-		};
+ 					  "legacy";
+ 			status = "disabled";
+ 		};
 +
 +		qpic_bam: dma@7984000 {
 +			compatible = "qcom,bam-v1.7.0";
@@ -77,7 +114,8 @@ index 52a64e7..740808b 100644
 +				nand-bus-width = <8>;
 +			};
 +		};
-	};
+ 	};
  };
 --
 2.7.2
+

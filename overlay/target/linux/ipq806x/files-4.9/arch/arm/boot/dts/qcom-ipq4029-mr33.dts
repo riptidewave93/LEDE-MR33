@@ -23,6 +23,11 @@
 
 	aliases {
 		i2c1 = &i2c_1;
+		led-boot = &power;
+		led-failsafe = &power;
+		led-running = &power;
+		led-upgrade = &power;
+		/delete-property/ spi0;
 	};
 
 	memory {
@@ -53,6 +58,18 @@
 
 	soc {
 		pinctrl@0x01000000 {
+
+			/delete-property/ spi_0_pinmux;
+
+			mdio_pins: mdio_pinmux {
+					 /delete-property/ mux_1;
+					 /delete-property/ mux_2;
+			 };
+
+			serial_0_pins: serial_pinmux {
+				/delete-property/ mux;
+			};
+
 			i2c_1_pins: i2c_1_pinmux {
 				pinmux {
 					function = "blsp_i2c1";
@@ -64,6 +81,7 @@
 					bias-disable;
 				};
 			};
+
 			serial_1_pins: serial_1_pinmux {
 				mux {
 					pins = "gpio8", "gpio9", "gpio10", "gpio11";
@@ -71,7 +89,38 @@
 					bias-disable;
 				};
 			};
+
+			nand_pins: nand_pins {
+				mux {
+					pins = "gpio52", "gpio53", "gpio54",
+						"gpio55", "gpio56", "gpio57",
+						"gpio58", "gpio59", "gpio60",
+						"gpio61", "gpio62", "gpio63",
+						"gpio64", "gpio65", "gpio66",
+						"gpio67", "gpio68", "gpio69";
+					function = "qpic_pad";
+					bias-disable;
+				};
+
+				pullups {
+					pins = "gpio52", "gpio53", "gpio58",
+						"gpio59";
+					bias-pull-up;
+				};
+
+				pulldowns {
+					pins = "gpio54", "gpio55", "gpio56",
+						"gpio57", "gpio60", "gpio61",
+						"gpio62", "gpio63", "gpio64",
+						"gpio65", "gpio66", "gpio67",
+						"gpio68", "gpio69";
+					bias-pull-down;
+				};
+			};
+
 		};
+
+		/delete-node/ spi@78b5000;
 
 		ess_tcsr@1953000 {
 			compatible = "qcom,tcsr";
@@ -119,7 +168,7 @@
 					 max-cur = /bits/ 8 <0x60>;
 				};
 
-				chan1 {
+				power: chan1 {
 					 chan-name = "mr33:tricolor:green";
 					 led-cur = /bits/ 8 <0x20>;
 					 max-cur = /bits/ 8 <0x60>;
@@ -226,6 +275,11 @@
 			status = "okay";
 		};
 
+		serial@78af000 {
+			/delete-property/ pinctrl-0;
+			/delete-property/ pinctrl-names;
+		};
+
 		serial@78b0000 {
 			pinctrl-0 = <&serial_1_pins>;
 			pinctrl-names = "default";
@@ -245,7 +299,9 @@
 		};
 
 		nand: qpic-nand@79b0000 {
-			/* status = "okay"; */
+			pinctrl-0 = <&nand_pins>;
+			pinctrl-names = "default";
+			status = "okay";
 
 			nandcs@0 {
 
@@ -354,10 +410,6 @@
 		};
 	};
 
-};
-
-&spi_0 {
-	status = "disabled";
 };
 
 &cpu0_opp_table {
