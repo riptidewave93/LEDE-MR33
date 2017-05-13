@@ -35,30 +35,88 @@
 		reg = <0x80000000 0x10000000>;
 	};
 
-	/* Same for these? */
 	reserved-memory {
 		#address-cells = <0x1>;
 		#size-cells = <0x1>;
 		ranges;
 
-		rsvd1@87000000 {
-			reg = <0x87000000 0x500000>;
-			no-map;
-		};
-
-		wifi_dump@87500000 {
-			reg = <0x87500000 0x600000>;
-			no-map;
-		};
-
-		rsvd2@87B00000 {
-			reg = <0x87b00000 0x500000>;
+		rsvd1@87E00000 {
+			reg = <0x87e00000 0x200000>;
 			no-map;
 		};
 	};
 
 	soc {
 		pinctrl@0x01000000 {
+
+			nand_pins: nand_pins {
+
+				mux {
+					pins = "gpio52", "gpio53", "gpio54",
+						"gpio55", "gpio56", "gpio61",
+						"gpio62", "gpio63",	"gpio69";
+				};
+				mux1 {
+					pins = "gpio57";
+					function = "qpic_pad4";
+					bias-disable;
+				};
+				mux2 {
+					pins = "gpio58";
+					function = "qpic_pad5";
+					bias-disable;
+				};
+				mux3 {
+					pins = "gpio59";
+					function = "qpic_pad6";
+					bias-disable;
+				};
+				mux4 {
+					pins = "gpio60";
+					function = "qpic_pad7";
+					bias-disable;
+				};
+				mux5 {
+					pins = "gpio64";
+					function = "qpic_pad1";
+					bias-disable;
+				};
+				mux6 {
+					pins = "gpio65";
+					function = "qpic_pad2";
+					bias-disable;
+				};
+				mux7 {
+					pins = "gpio66";
+					function = "qpic_pad3";
+					bias-disable;
+				};
+				mux8 {
+					pins = "gpio67";
+					function = "qpic_pad0";
+					bias-disable;
+				};
+				mux9 {
+					pins = "gpio68";
+					function = "qpic_pad8";
+					bias-disable;
+				};
+
+				pullups {
+					pins = "gpio52", "gpio53", "gpio58",
+						"gpio59";
+					bias-pull-up;
+				};
+
+				pulldowns {
+					pins = "gpio54", "gpio55", "gpio56",
+						"gpio57", "gpio60", "gpio61",
+						"gpio62", "gpio63", "gpio64",
+						"gpio65", "gpio66", "gpio67",
+						"gpio68", "gpio69";
+					bias-pull-down;
+				};
+			};
 
 			i2c_1_pins: i2c_1_pinmux {
 				pinmux {
@@ -174,7 +232,6 @@
 			reset-names = "ess_rst";
 			qcom,num_gmac = <1>;
 
-			/delete-property/ gmac1;
 			gmac0 {
 				qcom,phy_mdio_addr = <1>;
 				qcom,poll_required = <1>;
