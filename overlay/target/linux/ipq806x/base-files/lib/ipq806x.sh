@@ -30,8 +30,8 @@ ipq806x_board_detect() {
 		name="db149"
 		;;
 	*"Meraki MR33"*)
-    name="mr33"
-    ;;
+		name="mr33"
+		;;
 	*"NBG6817")
 		name="nbg6817"
 		;;
