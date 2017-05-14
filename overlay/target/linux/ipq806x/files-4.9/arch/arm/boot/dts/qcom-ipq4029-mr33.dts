@@ -118,6 +118,19 @@
 				};
 			};
 
+			/* We use diff pins for this */
+			i2c_0_pins: i2c_0_pinmux {
+				pinmux {
+					function = "blsp_i2c0";
+					pins = "gpio20", "gpio21";
+				};
+				pinconf {
+					pins = "gpio20", "gpio21";
+					drive-strength = <16>;
+					bias-disable;
+				};
+			};
+
 			i2c_1_pins: i2c_1_pinmux {
 				pinmux {
 					function = "blsp_i2c1";
@@ -148,7 +161,8 @@
 			};
 		};
 
-		i2c_1: i2c@78b8000 { /* Missing in IPQ4019 define */
+		/* Missing in IPQ4019 define */
+		i2c_1: i2c@78b8000 {
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x78b8000 0x600>;
 			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
@@ -228,8 +242,6 @@
 		};
 
 		edma@c080000 {
-			resets = <&gcc ESS_RESET>;
-			reset-names = "ess_rst";
 			qcom,num_gmac = <1>;
 
 			gmac0 {
@@ -300,17 +312,17 @@
 					};
 					partition@5 {
 						label = "cdt";
-						reg = <0x000000500000 0x000000100000>;
+						reg = <0x000000500000 0x000000080000>;
 						read-only;
 					};
 					partition@6 {
 						label = "cdt_alt";
-						reg = <0x000000580000 0x000000100000>;
+						reg = <0x000000580000 0x000000080000>;
 						read-only;
 					};
 					partition@7 {
 						label = "ddrparams";
-						reg = <0x000000600000 0x000000100000>;
+						reg = <0x000000600000 0x000000080000>;
 						read-only;
 					};
 					partition@8 {
@@ -324,6 +336,11 @@
 						read-only;
 					};
 					partition@10 {
+						label = "ART";
+						reg = <0x000000b00000 0x000000080000>;
+						read-only;
+					};
+					partition@11 {
 						label = "ubi";
 						reg = <0x000000c00000 0x000007000000>;
 					};

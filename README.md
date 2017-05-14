@@ -1,7 +1,7 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [1a16cb9c67f0d2c530914aec31c721b75f03a908](https://github.com/lede-project/source/commit/1a16cb9c67f0d2c530914aec31c721b75f03a908)
+Currently based on commit [83e4ed3497d40dc7da9d2d2c2febbf6272815c51](https://github.com/lede-project/source/commit/83e4ed3497d40dc7da9d2d2c2febbf6272815c51)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/
@@ -30,21 +30,19 @@ This is also a [secret](https://www.youtube.com/watch?v=gvYfRiJQIX8).
 To Do
 -----
 ##### MR33
-* Wireless (SoC Radios)
-* PCIe Wireless (If Possible)
-* Fixup Ethernet Driver (very hacky currently)
-* System Integration
+* Fixup Ethernet Driver (unstable - 1Gb only currently)
 * Sysupgrade
-* Cleanup DTS if possible
 
 Working
 -----
 ##### MR33
 * NAND
 * Bluetooth
-* Ethernet (dirty code)
+* SoC Wireless
+* PCIe Wireless
 * LED's/GPIOs
 * Reset button
+* System Integration
 * Kernel Device Profile
 
 Notice
