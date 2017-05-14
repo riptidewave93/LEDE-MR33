@@ -1,0 +1,19 @@
+#!/bin/sh
+
+. /lib/ipq806x.sh
+
+[ -z "$(type -a hciattach)" ] && return 0
+
+case $(ipq806x_board_name) in
+	mr33)
+		# reset B-LE radio
+		echo 1 > /sys/class/gpio/nreset_ble/value
+		sleep 1
+		echo 0 > /sys/class/gpio/nreset_ble/value
+		# Attach
+		hciattach /dev/ttyMSM1 any 1500000 flow
+		hciconfig hci0 up
+		;;
+esac
+
+exit 0
