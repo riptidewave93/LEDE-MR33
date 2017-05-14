@@ -32,7 +32,8 @@ fritz4040)
 	ucidef_set_led_switch "lan" "LAN" "${board}:green:lan" "switch0" "0x1e"
 	;;
 mr33)
-	ucidef_set_led_netdev "wlan1" "WLAN1" "$board:blue:tricolor0" "wlan1"
+	ucidef_set_led_netdev "wlan1" "WLAN1" "$board:blue:tricolor0" "wlan1" "link"
+	ucidef_set_led_netdev "wlan2" "WLAN2" "$board:blue:tricolor0" "wlan2" "link"
 	;;
 nbg6817)
 	ucidef_set_led_wlan "wlan2g" "WLAN2G" "$board:amber:wifi2g" "phy1tpt"

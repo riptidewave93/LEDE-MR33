@@ -17,8 +17,7 @@ fetch_mac_from_file() {
 preinit_set_mac_address() {
 	case $(ipq806x_board_name) in
 		mr33)
-			i2c_path="/sys/bus/i2c/devices/0-0050/eeprom"
-			mac_lan=$(fetch_mac_from_file $i2c_path 102)
+			mac_lan=$(fetch_mac_from_file "/sys/bus/i2c/devices/0-0050/eeprom" 102)
 			[ -n "$mac_lan" ] && ifconfig eth0 hw ether "$mac_lan"
 			;;
 	esac
