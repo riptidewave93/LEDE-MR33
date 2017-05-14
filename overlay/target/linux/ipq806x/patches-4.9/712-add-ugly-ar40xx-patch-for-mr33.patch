@@ -1,6 +1,6 @@
 --- linux-4.9.20/drivers/net/phy/ar40xx.c.orig	2017-05-02 17:59:11.827218985 +0200
 +++ linux-4.9.20/drivers/net/phy/ar40xx.c	2017-05-02 18:06:44.358165050 +0200
-@@ -2008,6 +2008,42 @@ static int ar40xx_probe(struct platform_
+@@ -2008,6 +2008,45 @@ static int ar40xx_probe(struct platform_
  		return -EIO;
  	}
 
@@ -30,6 +30,9 @@
 +#define ESS_PORT_1G_FDX      (ESS_PORT_STATUS_DUPLEX_MODE | ESS_PORT_STATUS_RX_FLOW_EN | \
 +                              ESS_PORT_STATUS_TX_FLOW_EN  | ESS_PORT_STATUS_RX_MAC_EN  | \
 +                              ESS_PORT_STATUS_TX_MAC_EN   | ESS_PORT_STATUS_SPEED_1000)
++#define ESS_PORT_100M_FDX      (ESS_PORT_STATUS_DUPLEX_MODE | ESS_PORT_STATUS_RX_FLOW_EN | \
++                              ESS_PORT_STATUS_TX_FLOW_EN  | ESS_PORT_STATUS_RX_MAC_EN  | \
++                              ESS_PORT_STATUS_TX_MAC_EN   | ESS_PORT_STATUS_SPEED_100)
 +
 +		if (priv->mac_mode == 0x3) {
 +			ar40xx_write(priv, ESS_RGMII_CTRL, 0x400);

@@ -190,26 +190,26 @@
 				reg = <0x30>;
 
 				chan0 {
-					chan-name = "mr33:tricolor:red";
+					chan-name = "mr33:red:tricolor0";
 					led-cur = /bits/ 8 <0x20>;
 					max-cur = /bits/ 8 <0x60>;
 				};
 
 				power: chan1 {
-					label = "mr33:tricolor:green"; /* used by userspace LED parser */
-					chan-name = "mr33:tricolor:green";
+					label = "mr33:green:tricolor0"; /* used by userspace LED parser */
+					chan-name = "mr33:green:tricolor0";
 					led-cur = /bits/ 8 <0x20>;
 					max-cur = /bits/ 8 <0x60>;
 				};
 
 				chan2 {
-					chan-name = "mr33:tricolor:blue";
+					chan-name = "mr33:blue:tricolor0";
 					led-cur = /bits/ 8 <0x20>;
 					max-cur = /bits/ 8 <0x60>;
 				};
 
 				chan3 {
-					chan-name = "mr33:power:white";
+					chan-name = "mr33:white:power";
 					led-cur = /bits/ 8 <0x20>;
 					max-cur = /bits/ 8 <0x60>;
 				};
@@ -369,7 +369,7 @@
 		compatible = "gpio-leds";
 
 		diag {
-			label = "mr33:power:orange";
+			label = "mr33:orange:power";
 			gpios = <&tlmm 49 GPIO_ACTIVE_LOW>;
 			panic-indicator;
 		};

@@ -8,6 +8,7 @@ And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/761243/
   * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4
   * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7
+  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/4374fd31f36bac51ff3c57cad2628d34bc223a29
 
 Building
 -----
@@ -31,7 +32,6 @@ To Do
 -----
 ##### MR33
 * Fixup Ethernet Driver (unstable - 1Gb only currently)
-* Sysupgrade
 
 Working
 -----
@@ -44,6 +44,7 @@ Working
 * Reset button
 * System Integration
 * Kernel Device Profile
+* Sysupgrade
 
 Notice
 ------
