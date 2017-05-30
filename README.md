@@ -1,14 +1,13 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [83e4ed3497d40dc7da9d2d2c2febbf6272815c51](https://github.com/lede-project/source/commit/83e4ed3497d40dc7da9d2d2c2febbf6272815c51)
+Currently based on commit [a4198f8c8d2c6bc57660d21f7ce97f3c0d19b736](https://github.com/lede-project/source/commit/a4198f8c8d2c6bc57660d21f7ce97f3c0d19b736)
 
 And the following cherry picks:
-  * https://patchwork.ozlabs.org/patch/752962/
-  * https://patchwork.ozlabs.org/patch/761243/
-  * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4
-  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7
-  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/4374fd31f36bac51ff3c57cad2628d34bc223a29
+  * https://patchwork.ozlabs.org/patch/752962/ for pinctrl & other defines
+  * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
+  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7 for correct CPU Frequency
+  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/4374fd31f36bac51ff3c57cad2628d34bc223a29 for working SysUpgrade
 
 Building
 -----
@@ -37,7 +36,7 @@ Working
 -----
 ##### MR33
 * NAND
-* Bluetooth
+* Bluetooth - See this [Commit](https://github.com/riptidewave93/LEDE-MR33/commit/43ca7f34e0437ef9384fc38f1c4de6a843f1dd98).
 * SoC Wireless
 * PCIe Wireless
 * LED's/GPIOs
