@@ -1,13 +1,12 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [a4198f8c8d2c6bc57660d21f7ce97f3c0d19b736](https://github.com/lede-project/source/commit/a4198f8c8d2c6bc57660d21f7ce97f3c0d19b736)
+Currently based on commit [21f25bc4a325b3075d6426047640e9cf6176894c](https://github.com/lede-project/source/commit/21f25bc4a325b3075d6426047640e9cf6176894c)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for pinctrl & other defines
   * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
   * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7 for correct CPU Frequency
-  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/4374fd31f36bac51ff3c57cad2628d34bc223a29 for working SysUpgrade
 
 Building
 -----
