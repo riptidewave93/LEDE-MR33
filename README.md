@@ -4,9 +4,10 @@ Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 Currently based on commit [a3332f2aa2d2d3fb6fcd92a49f60bcae0dbd988e](https://github.com/lede-project/source/commit/a3332f2aa2d2d3fb6fcd92a49f60bcae0dbd988e)
 
 And the following cherry picks:
-  * https://patchwork.ozlabs.org/patch/752962/ For other defines (pinctl part merged upstream)
+  * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
   * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
   * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7 for correct CPU Frequency
+  * https://patchwork.ozlabs.org/patch/774684/ for 2nd i2c interface
 
 Building
 -----
