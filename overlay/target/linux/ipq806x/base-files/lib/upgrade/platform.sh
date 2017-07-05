@@ -12,6 +12,7 @@ platform_pre_upgrade() {
 
 	case "$board" in
 	ap148 |\
+	ap-dk04.1-c1 |\
 	d7800 |\
 	mr33 |\
 	nbg6817 |\

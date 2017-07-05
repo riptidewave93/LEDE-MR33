@@ -1,7 +1,7 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [a3332f2aa2d2d3fb6fcd92a49f60bcae0dbd988e](https://github.com/lede-project/source/commit/a3332f2aa2d2d3fb6fcd92a49f60bcae0dbd988e)
+Currently based on commit [eb7c14d512482e18d05f61afa44205167ea094c0](https://github.com/lede-project/source/commit/eb7c14d512482e18d05f61afa44205167ea094c0)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
