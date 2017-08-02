@@ -53,11 +53,10 @@ ath10kcal_patch_mac() {
 
 [ -e /lib/firmware/$FIRMWARE ] && exit 0
 
-. /lib/ipq806x.sh
 . /lib/functions.sh
 . /lib/functions/system.sh
 
-board=$(ipq806x_board_name)
+board=$(board_name)
 
 
 case "$FIRMWARE" in
@@ -94,6 +93,19 @@ case "$FIRMWARE" in
 	esac
 	;;
 
+"ath10k/cal-pci-0000:01:00.0.bin")
+	case $board in
+	mr33)
+		. /lib/upgrade/nand.sh
+
+		if [ -n "$(nand_find_volume ubi0 ART)" ]; then
+			ath10kcal_ubi_extract "ART" 36864 12064
+		else
+			ath10kcal_extract "ART" 36864 12064
+		fi
+		;;
+	esac
+	;;
 "ath10k/pre-cal-pci-0000:01:00.0.bin")
 	case $board in
 	c2600)
@@ -108,15 +120,6 @@ case "$FIRMWARE" in
 	ea8500)
 		hw_mac_addr=$(mtd_get_mac_ascii devinfo hw_mac_addr)
 		ath10kcal_extract "art" 4096 12064
-		;;
-	mr33)
-		. /lib/upgrade/nand.sh
-
-		if [ -n "$(nand_find_volume ubi0 ART)" ]; then
-			ath10kcal_ubi_extract "ART" 36864 12064
-		else
-			ath10kcal_extract "ART" 36864 12064
-		fi
 		;;
 	nbg6817)
 		ath10kcal_extract "0:ART" 4096 12064

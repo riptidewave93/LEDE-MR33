@@ -1,14 +1,5 @@
 #!/bin/ash
 
-[ "$ACTION" == "add" ] || exit 0
-
-PHYNBR=${DEVPATH##*/phy}
-
-[ -n $PHYNBR ] || exit 0
-
-. /lib/ipq806x.sh
-. /lib/functions/system.sh
-
 fetch_mac_from_file() {
 	local path="$1"
 	local offset="$2"
@@ -21,7 +12,16 @@ fetch_mac_from_file() {
 	hexdump -v -n 6 -s $offset -e '5/1 "%02x:" 1/1 "%02x"' $path 2>/dev/null
 }
 
-board=$(ipq806x_board_name)
+[ "$ACTION" == "add" ] || exit 0
+
+PHYNBR=${DEVPATH##*/phy}
+
+[ -n $PHYNBR ] || exit 0
+
+. /lib/functions.sh
+. /lib/functions/system.sh
+
+board=$(board_name)
 
 case "$board" in
 	c2600)
