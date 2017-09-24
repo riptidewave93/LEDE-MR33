@@ -1,7 +1,7 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [4787e1960bf5c8f970a0f935c1efebd530100c5d](https://github.com/lede-project/source/commit/4787e1960bf5c8f970a0f935c1efebd530100c5d)
+Currently based on commit [31e9445b7e614f54daa0caf3148e223d088311ab](https://github.com/lede-project/source/commit/31e9445b7e614f54daa0caf3148e223d088311ab)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
@@ -31,8 +31,9 @@ To Do
 -----
 ##### MR33
 * Fixup Ethernet Driver (1Gbps/FD only & inbound ARP issues)
-  * Move to development code for qca8k from [blogic's staging repo](https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=dd3bdac6d1dcd98d4d494052f7df31ca21558d6f)
+  * Maybe move to development code for qca8k from [blogic's staging repo](https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=dd3bdac6d1dcd98d4d494052f7df31ca21558d6f)
 * Cleanup things
+* Writeup flashing/booting process
 
 Working
 -----
