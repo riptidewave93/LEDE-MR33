@@ -30,8 +30,7 @@ This is also a [secret](https://www.youtube.com/watch?v=gvYfRiJQIX8).
 To Do
 -----
 ##### MR33
-* Fixup Ethernet Driver (1Gbps/FD only & inbound ARP issues)
-  * Maybe move to development code for qca8k from [blogic's staging repo](https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=dd3bdac6d1dcd98d4d494052f7df31ca21558d6f)
+* Maybe move to development code for qca8k from [blogic's staging repo](https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=dd3bdac6d1dcd98d4d494052f7df31ca21558d6f)
 * Cleanup things
 * Writeup flashing/booting process
 
@@ -42,6 +41,7 @@ Working
 * Bluetooth - See this [Commit](https://github.com/riptidewave93/LEDE-MR33/commit/43ca7f34e0437ef9384fc38f1c4de6a843f1dd98).
 * SoC Wireless
 * PCIe Wireless
+* Ethernet (IGMP might need testing)
 * LED's/GPIOs
 * Reset button
 * System Integration

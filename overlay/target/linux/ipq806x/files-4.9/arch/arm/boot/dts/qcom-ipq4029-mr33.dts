@@ -166,15 +166,21 @@
 			reg = <0x4a1000 0x4>;
 		};
 
+		ess-psgmii@98000 {
+			status = "disabled";
+		};
+
 		ess-switch@c000000 {
-			single_nic;
+			status = "disabled";
 			switch_mac_mode = <0x3>; /* mac mode for RGMII RMII */
 			switch_lan_bmp = <0x0>; /* lan port bitmap */
 			switch_wan_bmp = <0x10>; /* wan port bitmap */
 		};
 
 		edma@c080000 {
+			qcom,single-phy;
 			qcom,num_gmac = <1>;
+			phy-mode = "rgmii-rxid";
 
 			gmac0 {
 				qcom,phy_mdio_addr = <1>;
