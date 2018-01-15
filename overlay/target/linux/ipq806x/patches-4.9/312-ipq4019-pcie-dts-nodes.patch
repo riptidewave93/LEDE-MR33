@@ -1,8 +1,6 @@
-Index: linux-4.9.20/arch/arm/boot/dts/qcom-ipq4019.dtsi
-===================================================================
---- linux-4.9.20.orig/arch/arm/boot/dts/qcom-ipq4019.dtsi
-+++ linux-4.9.20/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -475,5 +475,72 @@
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -479,5 +479,72 @@
  					  "legacy";
  			status = "disabled";
  		};

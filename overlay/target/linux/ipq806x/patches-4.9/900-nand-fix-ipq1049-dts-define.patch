@@ -43,12 +43,12 @@
 -			};
 -		};
  	};
-
+ 
  	soc {
 @@ -702,5 +664,42 @@
  			status = "disabled";
  		};
-
+ 
 +    qpic_bam: dma@7984000 {
 +			compatible = "qcom,bam-v1.7.0";
 +			reg = <0x7984000 0x1a000>;

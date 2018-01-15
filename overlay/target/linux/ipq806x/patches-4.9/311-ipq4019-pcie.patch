@@ -1,11 +1,9 @@
-Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
-===================================================================
---- linux-4.9.20.orig/drivers/pci/host/pcie-qcom.c
-+++ linux-4.9.20/drivers/pci/host/pcie-qcom.c
+--- a/drivers/pci/host/pcie-qcom.c
++++ b/drivers/pci/host/pcie-qcom.c
 @@ -36,53 +36,17 @@
-
+ 
  #include "pcie-designware.h"
-
+ 
 -/* DBI registers */
 -#define PCIE20_AXI_MSTR_RESP_COMP_CTRL0		0x818
 -#define PCIE20_AXI_MSTR_RESP_COMP_CTRL1		0x81c
@@ -60,7 +58,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 +#define PCIE20_PARF_LTSSM			0x1B0
 +#define PCIE20_PARF_SID_OFFSET			0x234
 +#define PCIE20_PARF_BDF_TRANSLATE_CFG		0x24C
-
+ 
  #define PCIE20_ELBI_SYS_CTRL			0x04
  #define PCIE20_ELBI_SYS_CTRL_LT_ENABLE		BIT(0)
 @@ -95,18 +59,14 @@ struct qcom_pcie_resources_v0 {
@@ -80,12 +78,12 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
  	struct regulator *vdda_refclk;
 -	uint8_t phy_tx0_term_offset;
  };
-
+ 
  struct qcom_pcie_resources_v1 {
 @@ -118,9 +78,40 @@ struct qcom_pcie_resources_v1 {
  	struct regulator *vdda;
  };
-
+ 
 +struct qcom_pcie_resources_v2 {
 +	struct clk *aux_clk;
 +	struct clk *master_clk;
@@ -121,7 +119,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 +	struct qcom_pcie_resources_v2 v2;
 +	struct qcom_pcie_resources_v3 v3;
  };
-
+ 
  struct qcom_pcie;
 @@ -128,8 +119,9 @@ struct qcom_pcie;
  struct qcom_pcie_ops {
@@ -132,17 +130,17 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
  	void (*deinit)(struct qcom_pcie *pcie);
 +	void (*ltssm_enable)(struct qcom_pcie *pcie);
  };
-
+ 
  struct qcom_pcie {
 @@ -163,17 +155,35 @@ static irqreturn_t qcom_pcie_msi_irq_han
  	return dw_handle_msi_irq(pp);
  }
-
+ 
 -static int qcom_pcie_establish_link(struct qcom_pcie *pcie)
 +static void qcom_pcie_v0_v1_ltssm_enable(struct qcom_pcie *pcie)
  {
  	u32 val;
-
+ 
 -	if (dw_pcie_link_up(&pcie->pp))
 -		return 0;
 -
@@ -171,13 +169,13 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 +	/* Enable Link Training state machine */
 +	if (pcie->ops->ltssm_enable)
 +		pcie->ops->ltssm_enable(pcie);
-
+ 
  	return dw_pcie_wait_for_link(&pcie->pp);
  }
 @@ -207,14 +217,6 @@ static int qcom_pcie_get_resources_v0(st
  	if (IS_ERR(res->phy_clk))
  		return PTR_ERR(res->phy_clk);
-
+ 
 -	res->aux_clk = devm_clk_get(dev, "aux");
 -	if (IS_ERR(res->aux_clk))
 -		return PTR_ERR(res->aux_clk);
@@ -192,7 +190,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 @@ -235,14 +237,6 @@ static int qcom_pcie_get_resources_v0(st
  	if (IS_ERR(res->phy_reset))
  		return PTR_ERR(res->phy_reset);
-
+ 
 -	res->ext_reset = devm_reset_control_get(dev, "ext");
 -	if (IS_ERR(res->ext_reset))
 -		return PTR_ERR(res->ext_reset);
@@ -203,7 +201,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 -
  	return 0;
  }
-
+ 
 @@ -286,69 +280,15 @@ static void qcom_pcie_deinit_v0(struct q
  	reset_control_assert(res->axi_reset);
  	reset_control_assert(res->ahb_reset);
@@ -220,7 +218,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
  	regulator_disable(res->vdda_phy);
  	regulator_disable(res->vdda_refclk);
  }
-
+ 
 -static void qcom_pcie_prog_viewport_cfg0(struct qcom_pcie *pcie, u32 busdev)
 -{
 -	struct pcie_port *pp = &pcie->pp;
@@ -288,19 +286,19 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 -		goto err_assert_reset;
 +		goto err_assert_ahb;
  	}
-
+ 
  	ret = clk_prepare_enable(res->iface_clk);
  	if (ret) {
  		dev_err(dev, "cannot prepare/enable iface clock\n");
 -		goto err_assert_reset;
 +		goto err_assert_ahb;
  	}
-
+ 
  	ret = clk_prepare_enable(res->phy_clk);
 @@ -404,53 +338,22 @@ static int qcom_pcie_init_v0(struct qcom
  		goto err_clk_core;
  	}
-
+ 
 -	ret = clk_prepare_enable(res->aux_clk);
 -	if (ret) {
 -		dev_err(dev, "cannot prepare/enable aux clock\n");
@@ -319,12 +317,12 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
  		goto err_deassert_ahb;
  	}
 -	udelay(1);
-
+ 
  	/* enable PCIe clocks and resets */
  	val = readl(pcie->parf + PCIE20_PARF_PHY_CTRL);
  	val &= ~BIT(0);
  	writel(val, pcie->parf + PCIE20_PARF_PHY_CTRL);
-
+ 
 -	/* Set Tx termination offset */
 -	val = readl(pcie->parf + PCIE20_PARF_PHY_CTRL);
 -	val &= ~PHY_CTRL_PHY_TX0_TERM_OFFSET_MASK;
@@ -348,14 +346,14 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 -	val |= REF_SSP_EN;
 +	val |= BIT(16);
  	writel(val, pcie->parf + PCIE20_PARF_PHY_REFCLK);
-
+ 
 -	/* De-assert PHY, PCIe, POR and AXI resets */
  	ret = reset_control_deassert(res->phy_reset);
  	if (ret) {
  		dev_err(dev, "cannot deassert phy reset\n");
 @@ -481,16 +384,12 @@ static int qcom_pcie_init_v0(struct qcom
  	return 0;
-
+ 
  err_deassert_ahb:
 -	clk_disable_unprepare(res->ref_clk);
 -err_clk_ref:
@@ -374,7 +372,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 @@ -500,12 +399,6 @@ err_refclk:
  	return ret;
  }
-
+ 
 -static void qcom_pcie_configure_v0(struct qcom_pcie *pcie)
 -{
 -	qcom_pcie_prog_viewport_cfg0(pcie, MSM_PCIE_DEV_CFG_ADDR);
@@ -387,7 +385,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 @@ -585,6 +478,429 @@ err_res:
  	return ret;
  }
-
+ 
 +static int qcom_pcie_get_resources_v2(struct qcom_pcie *pcie)
 +{
 +	struct qcom_pcie_resources_v2 *res = &pcie->res.v2;
@@ -817,7 +815,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 @@ -593,6 +909,17 @@ static int qcom_pcie_link_up(struct pcie
  	return !!(val & PCI_EXP_LNKSTA_DLLLA);
  }
-
+ 
 +static void qcom_pcie_deinit_v2(struct qcom_pcie *pcie)
 +{
 +	struct qcom_pcie_resources_v2 *res = &pcie->res.v2;
@@ -835,17 +833,17 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 @@ -608,6 +935,9 @@ static void qcom_pcie_host_init(struct p
  	if (ret)
  		goto err_deinit;
-
+ 
 +	if (pcie->ops->post_init)
 +		pcie->ops->post_init(pcie);
 +
  	dw_pcie_setup_rc(pp);
-
+ 
  	if (IS_ENABLED(CONFIG_PCI_MSI))
 @@ -619,9 +949,6 @@ static void qcom_pcie_host_init(struct p
  	if (ret)
  		goto err;
-
+ 
 -	if (pcie->ops->init)
 -		pcie->ops->init(pcie);
 -
@@ -860,7 +858,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
  	.deinit = qcom_pcie_deinit_v0,
 +	.ltssm_enable = qcom_pcie_v0_v1_ltssm_enable,
  };
-
+ 
  static const struct qcom_pcie_ops ops_v1 = {
  	.get_resources = qcom_pcie_get_resources_v1,
  	.init = qcom_pcie_init_v1,
@@ -882,7 +880,7 @@ Index: linux-4.9.20/drivers/pci/host/pcie-qcom.c
 +	.deinit = qcom_pcie_deinit_v3,
 +	.ltssm_enable = qcom_pcie_v2_ltssm_enable,
  };
-
+ 
  static int qcom_pcie_probe(struct platform_device *pdev)
 @@ -740,6 +1083,8 @@ static const struct of_device_id qcom_pc
  	{ .compatible = "qcom,pcie-ipq8064", .data = &ops_v0 },

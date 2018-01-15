@@ -19,9 +19,6 @@ Signed-off-by: Ram Chandra Jangir <rjangir@codeaurora.org>
  5 files changed, 283 insertions(+), 60 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/net/qca-ess.txt
 
-diff --git a/Documentation/devicetree/bindings/net/qca-ess.txt b/Documentation/devicetree/bindings/net/qca-ess.txt
-new file mode 100644
-index 0000000..7f16d6b
 --- /dev/null
 +++ b/Documentation/devicetree/bindings/net/qca-ess.txt
 @@ -0,0 +1,110 @@
@@ -135,14 +132,12 @@ index 0000000..7f16d6b
 +		compatible = "qcom,ipq4019-mdio";
 +		reg = <0x90000 0x64>;
 +	};
-diff --git a/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1-c1.dts b/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1-c1.dts
-index 0d92f1b..2a8cf8d 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1-c1.dts
 +++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1-c1.dts
 @@ -19,4 +19,13 @@
  / {
-	model = "Qualcomm Technologies, Inc. IPQ40xx/AP-DK01.1-C1";
-
+ 	model = "Qualcomm Technologies, Inc. IPQ40xx/AP-DK01.1-C1";
+ 
 +	soc {
 +		mdio@90000 {
 +			status = "ok";
@@ -153,14 +148,12 @@ index 0d92f1b..2a8cf8d 100644
 +		};
 +        };
  };
-diff --git a/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1.dtsi b/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1.dtsi
-index 2a5cc5e..bf4fde6 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk01.1.dtsi
 @@ -41,6 +41,19 @@
-		};
-
-		pinctrl@0x01000000 {
+ 		};
+ 
+ 		pinctrl@0x01000000 {
 +			mdio_pins: mdio_pinmux {
 +				mux_1 {
 +					pins = "gpio53";
@@ -174,13 +167,13 @@ index 2a5cc5e..bf4fde6 100644
 +				};
 +			};
 +
-			serial_pins: serial_pinmux {
-				mux {
-					pins = "gpio60", "gpio61";
+ 			serial_pins: serial_pinmux {
+ 				mux {
+ 					pins = "gpio60", "gpio61";
 @@ -128,5 +141,29 @@
-		usb2: usb2@60f8800 {
-			status = "ok";
-		};
+ 		usb2: usb2@60f8800 {
+ 			status = "ok";
+ 		};
 +
 +		ess-switch@c000000 {
 +			status = "ok";
@@ -205,16 +198,14 @@ index 2a5cc5e..bf4fde6 100644
 +		wifi@a800000 {
 +			status = "ok";
 +		};
-	};
+ 	};
  };
-diff --git a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
-index b68fc1a..a46afdf 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019-ap.dk04.1.dtsi
 @@ -88,6 +88,19 @@
-					bias-disable;
-				};
-			};
+ 					bias-disable;
+ 				};
+ 			};
 +
 +			mdio_pins: mdio_pinmux {
 +				mux_1 {
@@ -228,13 +219,13 @@ index b68fc1a..a46afdf 100644
 +					bias-bus-hold;
 +				};
 +			};
-		};
-
-		blsp_dma: dma@7884000 {
+ 		};
+ 
+ 		blsp_dma: dma@7884000 {
 @@ -159,5 +172,37 @@
-		watchdog@b017000 {
-			status = "ok";
-		};
+ 		watchdog@b017000 {
+ 			status = "ok";
+ 		};
 +
 +		mdio@90000 {
 +			status = "ok";
@@ -267,45 +258,43 @@ index b68fc1a..a46afdf 100644
 +		wifi@a800000 {
 +			status = "ok";
 +		};
-	};
+ 	};
  };
-diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-index be5b6f7..c5f5cf6 100644
 --- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -330,23 +330,23 @@
-			reg = <0x90000 0x64>;
-			status = "disabled";
-
+@@ -334,23 +334,23 @@
+ 			reg = <0x90000 0x64>;
+ 			status = "disabled";
+ 
 -			ethernet-phy@0 {
 +			phy0: ethernet-phy@0 {
-				reg = <0>;
-			};
-
+ 				reg = <0>;
+ 			};
+ 
 -			ethernet-phy@1 {
 +			phy1: ethernet-phy@1 {
-				reg = <1>;
-			};
-
+ 				reg = <1>;
+ 			};
+ 
 -			ethernet-phy@2 {
 +			phy2: ethernet-phy@2 {
-				reg = <2>;
-			};
-
+ 				reg = <2>;
+ 			};
+ 
 -			ethernet-phy@3 {
 +			phy3: ethernet-phy@3 {
-				reg = <3>;
-			};
-
+ 				reg = <3>;
+ 			};
+ 
 -			ethernet-phy@4 {
 +			phy4: ethernet-phy@4 {
-				reg = <4>;
-			};
-		};
-@@ -355,8 +355,12 @@
-			compatible = "qcom,ess-switch";
-			reg = <0xc000000 0x80000>;
-			switch_access_mode = "local bus";
+ 				reg = <4>;
+ 			};
+ 		};
+@@ -359,8 +359,12 @@
+ 			compatible = "qcom,ess-switch";
+ 			reg = <0xc000000 0x80000>;
+ 			switch_access_mode = "local bus";
 -			resets = <&gcc ESS_RESET>;
 -			reset-names = "ess_rst";
 +			resets = <&gcc ESS_RESET>, <&gcc ESS_MAC1_CLK_DIS>, \
@@ -314,42 +303,39 @@ index be5b6f7..c5f5cf6 100644
 +			reset-names = "ess_rst","ess_mac1_clk_dis", \
 +				"ess_mac2_clk_dis","ess_mac3_clk_dis", \
 +				"ess_mac4_clk_dis", "ess_mac5_clk_dis";
-			clocks = <&gcc GCC_ESS_CLK>;
-			clock-names = "ess_clk";
-			switch_cpu_bmp = <0x1>;
-@@ -371,6 +375,8 @@
-			compatible = "qcom,ess-psgmii";
-			reg = <0x98000 0x800>;
-			psgmii_access_mode = "local bus";
+ 			clocks = <&gcc GCC_ESS_CLK>;
+ 			clock-names = "ess_clk";
+ 			switch_cpu_bmp = <0x1>;
+@@ -375,6 +379,8 @@
+ 			compatible = "qcom,ess-psgmii";
+ 			reg = <0x98000 0x800>;
+ 			psgmii_access_mode = "local bus";
 +			resets = <&gcc ESS_PSGMII_ARES>;
 +			reset-names = "psgmii_rst";
-			status = "disabled";
-		};
-
-@@ -419,18 +424,19 @@
-			status = "disabled";
-
-			gmac0: gmac0 {
-				local-mac-address = [00 00 00 00 00 00];
+ 			status = "disabled";
+ 		};
+ 
+@@ -423,17 +429,18 @@
+ 
+ 			gmac0: gmac0 {
+ 				local-mac-address = [00 00 00 00 00 00];
 -				vlan_tag = <1 0x1f>;
 -			};
 -
 -			gmac1: gmac1 {
 -				local-mac-address = [00 00 00 00 00 00];
-				qcom,phy_mdio_addr = <4>;
-				qcom,poll_required = <1>;
-				qcom,forced_speed = <1000>;
-				qcom,forced_duplex = <1>;
-				vlan_tag = <2 0x20>;
-			};
+ 				qcom,phy_mdio_addr = <4>;
+ 				qcom,poll_required = <1>;
+ 				qcom,forced_speed = <1000>;
+ 				qcom,forced_duplex = <1>;
+ 				vlan_tag = <2 0x20>;
+ 			};
 +
 +			gmac1: gmac1 {
 +				local-mac-address = [00 00 00 00 00 00];
 +				qcom,poll_required_dynamic = <1>;
 +				vlan_tag = <1 0x1e>;
 +			};
-		};
-
-		usb3_ss_phy: ssphy@9a000 {
---
-2.7.2
+ 		};
+ 
+ 		usb3_ss_phy: ssphy@9a000 {
