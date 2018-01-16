@@ -23,7 +23,7 @@ if [ ! -d "$clonedir" ]; then
   Msg "Cloning Repo..."
   git clone https://github.com/openwrt/openwrt $clonedir
   cd $clonedir
-  git reset --hard 31e9445b7e614f54daa0caf3148e223d088311ab
+  git reset --hard 5bbcd80e3f2e28e2801b7fbe2825eb22fa70c020
   cd - > /dev/null
 fi
 
@@ -48,6 +48,13 @@ fi
 
 Msg "Applying overlay..."
 cp -R ./overlay/* $clonedir/
+
+if [ -r "remove-files" ]; then
+	Msg "Removing unwanted files from overlay..."
+	for victim in $(cat remove-files); do
+		[ -r "$clonedir/$victim" ] && rm -r "$clonedir/$victim"
+	done
+fi
 
 if [ "$firstbuild" -eq "1" ]; then
   Msg "Installing feeds..."

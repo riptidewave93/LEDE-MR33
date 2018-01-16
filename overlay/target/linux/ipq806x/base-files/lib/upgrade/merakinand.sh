@@ -20,7 +20,7 @@ meraki_is_caldata_valid() {
 	local magic
 
 	case "$board" in
-	"mr33")
+	"meraki,mr33")
 		magic=$(get_magic_at $mtddev 4096)
 		[ "$magic" != "202f" ] && return 0
 
@@ -47,7 +47,7 @@ merakinand_copy_caldata() {
 
 	# Setup partitions using board name, in case of future platforms
 	case "$board_name" in
-	"mr33")
+	"meraki,mr33")
 		# Src is MTD
 		mtd_src="$(find_mtd_chardev $cal_src)"
 		[ -n "$mtd_src" ] || {
@@ -91,7 +91,7 @@ platform_do_upgrade_merakinand() {
 
 	# Do we need to do any platform tweaks?
 	case "$board_name" in
-	"mr33")
+	"meraki,mr33")
 		# Check and create UBI caldata if it's invalid
 		merakinand_copy_caldata "ART" "ART"
 

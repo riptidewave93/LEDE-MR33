@@ -11,7 +11,7 @@
  * any warranty of any kind, whether express or implied.
  */
 
-#include "qcom-ipq4019-ap.dk04.1.dtsi"
+#include "qcom-ipq4019.dtsi"
 #include "qcom-ipq4019-bus.dtsi"
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -19,7 +19,7 @@
 
 / {
 	model = "Meraki MR33 Access Point";
-	compatible = "meraki,stinkbug", "qcom,ipq4019";
+	compatible = "meraki,mr33", "qcom,ipq4019";
 
 	aliases {
 		i2c1 = &i2c_1;
@@ -40,18 +40,64 @@
 		#size-cells = <0x1>;
 		ranges;
 
-		rsvd1@87E00000 {
-			reg = <0x87e00000 0x200000>;
+		tz_apps@87b80000 {
+			reg = <0x87b80000 0x280000>;
+			reusable;
+		};
+
+		smem@87e00000 {
+			reg = <0x87e00000 0x080000>;
+			no-map;
+		};
+
+		tz@87e80000 {
+			reg = <0x87e80000 0x180000>;
 			no-map;
 		};
 	};
 
 	soc {
-		pinctrl@0x01000000 {
-			/* We use the i2c-0 pins for serial_1 */
+		mdio@90000 {
+			status = "ok";
+			pinctrl-0 = <&mdio_pins>;
+			pinctrl-names = "default";
+			phy-reset-gpio = <&tlmm 47 0>;
+			bias-disable;
+		};
+
+		counter@4a1000 {
+			compatible = "qcom,qca-gcnt";
+			reg = <0x4a1000 0x4>;
+		};
+
+		pinctrl@1000000 {
+			mdio_pins: mdio_pinmux {
+				mux_1 {
+					pins = "gpio6";
+					function = "mdio";
+					bias-bus-hold;
+				};
+				mux_2 {
+					pins = "gpio7";
+					function = "mdc";
+					bias-bus-hold;
+				};
+			};
+
+			serial_0_pins: serial_pinmux {
+				mux {
+					pins = "gpio16", "gpio17";
+					function = "blsp_uart0";
+					bias-disable;
+				};
+			};
+
 			serial_1_pins: serial1_pinmux {
 				mux {
-					pins = "gpio8", "gpio9", "gpio10", "gpio11";
+					/* We use the i2c-0 pins for serial_1 */
+					pins = "gpio8", "gpio9";
+					function = "blsp_uart1";
+					bias-disable;
 				};
 			};
 
@@ -78,14 +124,72 @@
 					bias-disable;
 				};
 			};
+
+			nand_pins: nand_pins {
+				mux {
+					pins = "gpio52", "gpio53", "gpio54",
+						"gpio55", "gpio56", "gpio57",
+						"gpio58", "gpio59", "gpio60",
+						"gpio61", "gpio62", "gpio63",
+						"gpio64", "gpio65", "gpio66",
+						"gpio67", "gpio68", "gpio69";
+					function = "qpic";
+					bias-disable;
+				};
+
+				pullups {
+					pins = "gpio52", "gpio53", "gpio58",
+						"gpio59";
+					bias-pull-up;
+				};
+
+				pulldowns {
+					pins = "gpio54", "gpio55", "gpio56",
+						"gpio57", "gpio60", "gpio61",
+						"gpio62", "gpio63", "gpio64",
+						"gpio65", "gpio66", "gpio67",
+						"gpio68", "gpio69";
+					bias-pull-down;
+				};
+			};
 		};
 
-		spi_0: spi@78b5000 {
-			status = "disabled";
+		ess_tcsr@1953000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1953000 0x1000>;
+			qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
+		};
+
+		tcsr@1949000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1949000 0x100>;
+			qcom,wifi_glb_cfg = <TCSR_WIFI_GLB_CFG>;
+		};
+
+		tcsr@1957000 {
+			compatible = "qcom,tcsr";
+			reg = <0x1957000 0x100>;
+			qcom,wifi_noc_memtype_m0_m2 = <TCSR_WIFI_NOC_MEMTYPE_M0_M2>;
+		};
+
+		blsp_dma: dma@7884000 {
+			status = "ok";
+		};
+
+		serial@78af000 {
+			pinctrl-0 = <&serial_0_pins>;
+			pinctrl-names = "default";
+			status = "ok";
+		};
+
+		serial@78b0000 {
+			pinctrl-0 = <&serial_1_pins>;
+			pinctrl-names = "default";
+			status = "ok";
 		};
 
 		i2c_0: i2c@78b7000 {
-			reg = <0x78b7000 0x600>; /* Fix upstream offset typo */
+			reg = <0x78b7000 0x600>;
 			at24@50 {
 				compatible = "atmel,24c64";
 				pagesize = <32>;
@@ -108,7 +212,7 @@
 			dma-names = "rx", "tx";
 			pinctrl-0 = <&i2c_1_pins>;
 			pinctrl-names = "default";
-			status = "okay";
+			status = "ok";
 
 			lp5562 {
 				enable-gpio = <&tlmm 48 GPIO_ACTIVE_HIGH>;
@@ -143,35 +247,27 @@
 			};
 		};
 
-		ess_tcsr@1953000 {
-			compatible = "qcom,tcsr";
-			reg = <0x1953000 0x1000>;
-			qcom,ess-interface-select = <TCSR_ESS_PSGMII_RGMII5>;
+		dma@8e04000 {
+			status = "ok";
 		};
 
-		tcsr@1949000 {
-			compatible = "qcom,tcsr";
-			reg = <0x1949000 0x100>;
-			qcom,wifi_glb_cfg = <TCSR_WIFI_GLB_CFG>;
+		crypto@8e3a000 {
+			status = "ok";
 		};
 
-		tcsr@1957000 {
-			compatible = "qcom,tcsr";
-			reg = <0x1957000 0x100>;
-			qcom,wifi_noc_memtype_m0_m2 = <TCSR_WIFI_NOC_MEMTYPE_M0_M2>;
+		wifi@a000000 {
+			status = "ok";
 		};
 
-		counter@4a1000 {
-			compatible = "qcom,qca-gcnt";
-			reg = <0x4a1000 0x4>;
+		wifi@a800000 {
+			status = "ok";
 		};
 
-		ess-psgmii@98000 {
-			status = "disabled";
+		watchdog@b017000 {
+			status = "ok";
 		};
 
 		ess-switch@c000000 {
-			status = "disabled";
 			switch_mac_mode = <0x3>; /* mac mode for RGMII RMII */
 			switch_lan_bmp = <0x0>; /* lan port bitmap */
 			switch_wan_bmp = <0x10>; /* wan port bitmap */
@@ -181,108 +277,12 @@
 			qcom,single-phy;
 			qcom,num_gmac = <1>;
 			phy-mode = "rgmii-rxid";
+			status = "ok";
 
 			gmac0 {
 				qcom,phy_mdio_addr = <1>;
 				qcom,poll_required = <1>;
 				vlan_tag = <0 0x20>;
-			};
-		};
-
-		ssphy@9a000 {
-			status = "disabled";
-		};
-
-		hsphy@a6000 {
-			status = "disabled";
-		};
-
-		usb3@8af8800 {
-			status = "disabled";
-		};
-
-		hsphy@a8000 {
-			status = "disabled";
-		};
-
-		usb2@60f8800 {
-			status = "disabled";
-		};
-
-		pcie0: pci@40000000 {
-			status = "okay";
-			perst-gpio = <&tlmm 38 0x1>;
-			wake-gpio = <&tlmm 50 0x1>;
-		};
-
-		nand: qpic-nand@79b0000 {
-
-			nandcs@0 {
-				partitions {
-					compatible = "fixed-partitions";
-					#address-cells = <1>;
-					#size-cells = <1>;
-
-					partition@0 {
-						label = "sbl1";
-						reg = <0x000000000000 0x000000100000>;
-						read-only;
-					};
-					partition@1 {
-						label = "mibib";
-						reg = <0x000000100000 0x000000100000>;
-						read-only;
-					};
-					partition@2 {
-						label = "bootconfig";
-						reg = <0x000000200000 0x000000100000>;
-						read-only;
-					};
-					partition@3 {
-						label = "qsee";
-						reg = <0x000000300000 0x000000100000>;
-						read-only;
-					};
-					partition@4 {
-						label = "qsee_alt";
-						reg = <0x000000400000 0x000000100000>;
-						read-only;
-					};
-					partition@5 {
-						label = "cdt";
-						reg = <0x000000500000 0x000000080000>;
-						read-only;
-					};
-					partition@6 {
-						label = "cdt_alt";
-						reg = <0x000000580000 0x000000080000>;
-						read-only;
-					};
-					partition@7 {
-						label = "ddrparams";
-						reg = <0x000000600000 0x000000080000>;
-						read-only;
-					};
-					partition@8 {
-						label = "u-boot";
-						reg = <0x000000700000 0x000000200000>;
-						read-only;
-					};
-					partition@9 {
-						label = "u-boot-backup";
-						reg = <0x000000900000 0x000000200000>;
-						read-only;
-					};
-					partition@10 {
-						label = "ART";
-						reg = <0x000000b00000 0x000000080000>;
-						read-only;
-					};
-					partition@11 {
-						label = "ubi";
-						reg = <0x000000c00000 0x000007000000>;
-					};
-				};
 			};
 		};
 	};
@@ -327,5 +327,88 @@
 			gpios = <&tlmm 43 GPIO_ACTIVE_LOW>;
 		};
 	};
+};
 
+&pcie0 {
+	status = "ok";
+	perst-gpio = <&tlmm 38 GPIO_ACTIVE_LOW>;
+	wake-gpio = <&tlmm 50 GPIO_ACTIVE_LOW>;
+};
+
+&qpic_bam {
+	status = "ok";
+};
+
+&nand {
+	pinctrl-0 = <&nand_pins>;
+	pinctrl-names = "default";
+	status = "ok";
+
+	nandcs@0 {
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			partition@0 {
+				label = "sbl1";
+				reg = <0x000000000000 0x000000100000>;
+				read-only;
+			};
+			partition@1 {
+				label = "mibib";
+				reg = <0x000000100000 0x000000100000>;
+				read-only;
+			};
+			partition@2 {
+				label = "bootconfig";
+				reg = <0x000000200000 0x000000100000>;
+				read-only;
+			};
+			partition@3 {
+				label = "qsee";
+				reg = <0x000000300000 0x000000100000>;
+				read-only;
+			};
+			partition@4 {
+				label = "qsee_alt";
+				reg = <0x000000400000 0x000000100000>;
+				read-only;
+			};
+			partition@5 {
+				label = "cdt";
+				reg = <0x000000500000 0x000000080000>;
+				read-only;
+			};
+			partition@6 {
+				label = "cdt_alt";
+				reg = <0x000000580000 0x000000080000>;
+				read-only;
+			};
+			partition@7 {
+				label = "ddrparams";
+				reg = <0x000000600000 0x000000080000>;
+				read-only;
+			};
+			partition@8 {
+				label = "u-boot";
+				reg = <0x000000700000 0x000000200000>;
+				read-only;
+			};
+			partition@9 {
+				label = "u-boot-backup";
+				reg = <0x000000900000 0x000000200000>;
+				read-only;
+			};
+			partition@10 {
+				label = "ART";
+				reg = <0x000000b00000 0x000000080000>;
+				read-only;
+			};
+			partition@11 {
+				label = "ubi";
+				reg = <0x000000c00000 0x000007000000>;
+			};
+		};
+	};
 };

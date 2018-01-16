@@ -45,7 +45,7 @@ Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
  		};
  
  		cpu@3 {
-@@ -81,6 +76,33 @@
+@@ -81,6 +76,29 @@
  			reg = <0x3>;
  			clocks = <&gcc GCC_APPS_CLK_SRC>;
  			clock-frequency = <0>;
@@ -57,24 +57,20 @@ Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
 +		compatible = "operating-points-v2";
 +		opp-shared;
 +
-+		opp@48000000 {
++		opp-48000000 {
 +			opp-hz = /bits/ 64 <48000000>;
 +			clock-latency-ns = <256000>;
 +		};
-+		opp@200000000 {
++		opp-200000000 {
 +			opp-hz = /bits/ 64 <200000000>;
 +			clock-latency-ns = <256000>;
 +		};
-+		opp@500000000 {
++		opp-500000000 {
 +			opp-hz = /bits/ 64 <500000000>;
 +			clock-latency-ns = <256000>;
 +		};
-+		opp@666000000 {
-+			opp-hz = /bits/ 64 <666000000>;
-+			clock-latency-ns = <256000>;
-+		};
-+		opp@717000000 {
-+			opp-hz = /bits/ 64 <717000000>;
++		opp-716800000 {
++			opp-hz = /bits/ 64 <716800000>;
 +			clock-latency-ns = <256000>;
  		};
  	};

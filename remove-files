@@ -1,0 +1,5 @@
+target/linux/ipq806x/patches-4.9/0022-dts-ipq4019-support-ARMv7-PMU.patch
+target/linux/ipq806x/patches-4.9/852-ipq4019-pinctrl-Updated-various-Pin-definitions.patch
+target/linux/ipq806x/patches-4.9/859-msm-pinctrl-Add-support-to-configure-ipq40xx-GPIO_PU.patch
+target/linux/ipq806x/patches-4.9/864-03-dts-ipq4019-ap-dk01-add-tcsr-config-to-dtsi.patch
+target/linux/ipq806x/patches-4.9/864-06-dts-ipq4019-fix-max-cpu-speed.patch

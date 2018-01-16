@@ -1,8 +1,8 @@
 --- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -479,5 +479,72 @@
- 					  "legacy";
- 			status = "disabled";
+@@ -633,5 +633,72 @@
+ 				nand-bus-width = <8>;
+ 			};
  		};
 +
 +		pcie0: pci@40000000 {
