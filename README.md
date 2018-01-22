@@ -1,12 +1,11 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [9c2ac19b032c81a454f1efbcf5681b80cad2fa39](https://github.com/openwrt/openwrt/commit/9c2ac19b032c81a454f1efbcf5681b80cad2fa39)
+Currently based on commit [eaf79d06b761726ba05edfeb89643e80ae67b24b](https://github.com/openwrt/openwrt/commit/eaf79d06b761726ba05edfeb89643e80ae67b24b)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
   * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
-  * https://github.com/chunkeey/LEDE-IPQ40XX/commit/8755ddc2862037459fe7808cb132a36158f7f7a7 for correct CPU Frequency
   * https://patchwork.ozlabs.org/patch/774684/ for 2nd i2c interface
 
 Building
@@ -30,8 +29,6 @@ This is also a [secret](https://www.youtube.com/watch?v=gvYfRiJQIX8).
 To Do
 -----
 ##### MR33
-* Maybe move to development code for qca8k from [blogic's staging repo](https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=dd3bdac6d1dcd98d4d494052f7df31ca21558d6f)
-* Cleanup things
 * Writeup flashing/booting process
 
 Working
@@ -41,9 +38,10 @@ Working
 * Bluetooth - See this [Commit](https://github.com/riptidewave93/LEDE-MR33/commit/43ca7f34e0437ef9384fc38f1c4de6a843f1dd98).
 * SoC Wireless
 * PCIe Wireless
-* Ethernet (IGMP might need testing)
+* Ethernet (IGMP and tagged VLAN might need further testing)
 * LED's/GPIOs
 * Reset button
+* Serial (It's TTL-232R-3V3 with 115200-N-8-1)
 * System Integration
 * Kernel Device Profile
 * SysUpgrade
