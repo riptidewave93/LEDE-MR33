@@ -75,12 +75,12 @@
 				mux_1 {
 					pins = "gpio6";
 					function = "mdio";
-					bias-bus-hold;
+					bias-disable;
 				};
 				mux_2 {
 					pins = "gpio7";
 					function = "mdc";
-					bias-bus-hold;
+					bias-disable;
 				};
 			};
 
@@ -126,20 +126,10 @@
 			};
 
 			nand_pins: nand_pins {
-				mux {
-					pins = "gpio52", "gpio53", "gpio54",
-						"gpio55", "gpio56", "gpio57",
-						"gpio58", "gpio59", "gpio60",
-						"gpio61", "gpio62", "gpio63",
-						"gpio64", "gpio65", "gpio66",
-						"gpio67", "gpio68", "gpio69";
-					function = "qpic";
-					bias-disable;
-				};
-
 				pullups {
 					pins = "gpio52", "gpio53", "gpio58",
 						"gpio59";
+					function = "qpic";
 					bias-pull-up;
 				};
 
@@ -149,6 +139,7 @@
 						"gpio62", "gpio63", "gpio64",
 						"gpio65", "gpio66", "gpio67",
 						"gpio68", "gpio69";
+					function = "qpic";
 					bias-pull-down;
 				};
 			};
