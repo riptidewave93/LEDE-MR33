@@ -62,7 +62,6 @@
 			pinctrl-0 = <&mdio_pins>;
 			pinctrl-names = "default";
 			phy-reset-gpio = <&tlmm 47 0>;
-			bias-disable;
 		};
 
 		counter@4a1000 {
