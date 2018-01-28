@@ -1,7 +1,7 @@
 # LEDE-MR33
 Bringup for the Cisco Meraki MR33 Access Point on LEDE!
 
-Currently based on commit [ad4232e3e986d89ac49f01bb2cec44d1e66d6969](https://github.com/openwrt/openwrt/commit/ad4232e3e986d89ac49f01bb2cec44d1e66d6969)
+Currently based on commit [74beb6f7104e7d5003adc061e0df8016484a6730](https://github.com/openwrt/openwrt/commit/74beb6f7104e7d5003adc061e0df8016484a6730)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
