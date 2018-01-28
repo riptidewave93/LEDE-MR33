@@ -115,7 +115,7 @@ define Device/meraki_mr33
 	DEVICE_TITLE := Meraki MR33
 	IMAGE_SIZE := 29753344
 	IMAGES = sysupgrade.bin
-	IMAHE/sysupgrade.bin := sysupgrade-tar | append-metadata
+	IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 	DEVICE_PACKAGES := ipq-wifi-meraki_mr33 ath10k-firmware-qca9887
 endef
 TARGET_DEVICES += meraki_mr33
