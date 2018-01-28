@@ -111,12 +111,11 @@ define Device/meraki_mr33
 	KERNEL_LOADADDR := 0x80208000
 	BLOCKSIZE := 4k
 	PAGESIZE := 256
-	BOARD_NAME := mr33
 	DEVICE_TITLE := Meraki MR33
 	IMAGE_SIZE := 29753344
 	IMAGES = sysupgrade.bin
 	IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-	DEVICE_PACKAGES := ipq-wifi-meraki_mr33 ath10k-firmware-qca9887
+	DEVICE_PACKAGES := -swconfig ipq-wifi-meraki_mr33 ath10k-firmware-qca9887
 endef
 TARGET_DEVICES += meraki_mr33
 

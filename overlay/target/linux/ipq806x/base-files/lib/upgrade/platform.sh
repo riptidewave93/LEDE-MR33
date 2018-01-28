@@ -51,9 +51,6 @@ platform_nand_pre_upgrade() {
 	zyxel,nbg6817)
 		zyxel_do_upgrade "$1"
 		;;
-	meraki,mr33)
-		CI_KERNPART="part.safe"
-		;;
 	esac
 }
 
