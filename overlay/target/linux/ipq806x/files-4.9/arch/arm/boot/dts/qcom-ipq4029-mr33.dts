@@ -205,7 +205,7 @@
 			pinctrl-names = "default";
 			status = "okay";
 
-			lp5562 {
+			lp5562@30 {
 				enable-gpio = <&tlmm 48 GPIO_ACTIVE_HIGH>;
 				compatible = "ti,lp5562";
 				clock-mode = /bits/8 <2>;
@@ -298,18 +298,18 @@
 		};
 	};
 
-	gpio_export {
+	gpio-export {
 		compatible = "gpio-export";
 
 		nload_ble {
 			gpio-export,name = "nload_ble";
-			gpio-export,output = <1>;
+			gpio-export,output = <0>;
 			gpios = <&tlmm 52 GPIO_ACTIVE_LOW>;
 		};
 
 		nreset_ble {
 			gpio-export,name = "nreset_ble";
-			gpio-export,output = <1>;
+			gpio-export,output = <0>;
 			gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
 		};
 
