@@ -301,12 +301,6 @@
 	gpio-export {
 		compatible = "gpio-export";
 
-		nload_ble {
-			gpio-export,name = "nload_ble";
-			gpio-export,output = <0>;
-			gpios = <&tlmm 52 GPIO_ACTIVE_LOW>;
-		};
-
 		nreset_ble {
 			gpio-export,name = "nreset_ble";
 			gpio-export,output = <0>;
