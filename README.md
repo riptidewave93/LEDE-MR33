@@ -1,11 +1,11 @@
-# LEDE-MR33
-Bringup for the Cisco Meraki MR33 Access Point on LEDE!
+# OPENWRT-MR33
+Bringup for the Cisco Meraki MR33 Access Point on OpenWrt!
 
 Currently based on commit [74beb6f7104e7d5003adc061e0df8016484a6730](https://github.com/openwrt/openwrt/commit/74beb6f7104e7d5003adc061e0df8016484a6730)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
-  * https://git.lede-project.org/?p=lede/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
+  * https://git.openwrt.org/?p=openwrt/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
   * https://patchwork.ozlabs.org/patch/774684/ for 2nd i2c interface
 
 Building
@@ -16,7 +16,7 @@ Building
 #### Modify Configs and Build
 `./build.sh modify`
 
-Note that you will need to run a modify on the first compile to select the ipq806x target, MR33 device in the LEDE menuconfig.
+Note that you will need to run a modify on the first compile to select the ipq806x target, MR33 device in the OpenWrt menuconfig.
 
 Booting
 -----
