@@ -97,6 +97,11 @@
 			pinctrl-0 = <&serial_1_pins>;
 			pinctrl-names = "default";
 			status = "okay";
+
+			bluetooth {
+				compatible = "ti,cc2650";
+				enable-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
+			};
 		};
 
 		/* Missing in IPQ4019 define */
@@ -198,12 +203,6 @@
 
 	gpio-export {
 		compatible = "gpio-export";
-
-		nreset_ble {
-			gpio-export,name = "nreset_ble";
-			gpio-export,output = <0>;
-			gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
-		};
 
 		on_adpt_pwr_src {
 			gpio-export,name = "on_adpt_pwr_src";
