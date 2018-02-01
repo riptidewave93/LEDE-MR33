@@ -1,7 +1,7 @@
 # OPENWRT-MR33
 Bringup for the Cisco Meraki MR33 Access Point on OpenWrt!
 
-Currently based on commit [74beb6f7104e7d5003adc061e0df8016484a6730](https://github.com/openwrt/openwrt/commit/74beb6f7104e7d5003adc061e0df8016484a6730)
+Currently based on commit [cc7a005c1a8b050447a6c67c18a1681f25800b34](https://github.com/openwrt/openwrt/commit/cc7a005c1a8b050447a6c67c18a1681f25800b34)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
