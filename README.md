@@ -1,12 +1,16 @@
 # OPENWRT-MR33
 Bringup for the Cisco Meraki MR33 Access Point on OpenWrt!
 
-Currently based on commit [cc7a005c1a8b050447a6c67c18a1681f25800b34](https://github.com/openwrt/openwrt/commit/cc7a005c1a8b050447a6c67c18a1681f25800b34)
+Currently based on commit [256477f7af2b53d2d1da10a7dece56499e22646d](https://github.com/openwrt/openwrt/commit/256477f7af2b53d2d1da10a7dece56499e22646d)
 
 And the following cherry picks:
   * https://patchwork.ozlabs.org/patch/752962/ for switch defines (pinctl part merged upstream)
   * https://git.openwrt.org/?p=openwrt/blogic/staging.git;a=commit;h=af81e7775f99b82933101f9bc5b6d83decc37fa4 for PCI-E Wireless
   * https://patchwork.ozlabs.org/patch/774684/ for 2nd i2c interface
+
+Based on the following code from Meraki:
+[Kernel source](https://github.com/riptidewave93/meraki-linux/tree/r25-linux-3.14-20170427)
+[U-Boot source](https://github.com/riptidewave93/meraki-uboot/tree/mr33-20170427)
 
 Building
 -----
