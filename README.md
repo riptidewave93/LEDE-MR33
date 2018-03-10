@@ -18,13 +18,9 @@ Building
 
 Note that you will need to run a modify on the first compile to select the ipq806x target, MR33 device in the LEDE menuconfig.
 
-Booting
+Booting & Flashing
 -----
-It's a [secret](https://www.youtube.com/watch?v=sTSA_sWGM44).
-
-Flashing
------
-This is also a [secret](https://www.youtube.com/watch?v=gvYfRiJQIX8).
+Booting and flashing documentation can be found on [Google Drive](https://drive.google.com/drive/folders/1jJa8LzYnY830v3nBZdOgAk0YQK6OdbSS)
 
 To Do
 -----
